@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>塔罗牌占卜</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero-card">
+      <p class="eyebrow">Mystic Tarot</p>
+      <h1>塔罗牌占卜</h1>
+      <p class="subtitle">一个用于娱乐和自我反思的塔罗体验</p>
+      <p class="disclaimer">
+        本工具仅供娱乐和自我反思，不构成医疗、法律、财务、心理治疗或人生重大决策建议。
+      </p>
+    </section>
+
+    <section class="panel input-panel" aria-labelledby="question-title">
+      <h2 id="question-title">提出你的问题</h2>
+      <label for="questionInput">你想询问什么？</label>
+      <textarea id="questionInput" rows="4" placeholder="例如：我现在应该如何看待这段关系？"></textarea>
+
+      <label for="questionType">问题类型</label>
+      <select id="questionType">
+        <option value="love">感情</option>
+        <option value="career">事业</option>
+        <option value="study">学业</option>
+        <option value="relationship">人际</option>
+        <option value="self">自我探索</option>
+        <option value="other">其他</option>
+      </select>
+
+      <label for="spreadType">牌阵选择</label>
+      <select id="spreadType">
+        <option value="one">单张牌：适合快速获得当下提示</option>
+        <option value="three">三张牌：过去 / 现在 / 未来</option>
+      </select>
+
+      <button id="startButton" class="primary-button">开始占卜</button>
+      <p id="safetyMessage" class="safety-message" role="alert"></p>
+    </section>
+
+    <section id="shuffleArea" class="panel hidden" aria-live="polite">
+      <h2>洗牌</h2>
+      <div class="shuffle-stage">
+        <div class="mini-card card-a"></div>
+        <div class="mini-card card-b"></div>
+        <div class="mini-card card-c"></div>
+      </div>
+      <p>正在洗牌，请保持专注……</p>
+    </section>
+
+    <section id="cutArea" class="panel hidden" aria-live="polite">
+      <h2>切牌</h2>
+      <p>请专注你的问题，完成切牌。</p>
+      <button id="cutButton" class="primary-button">切牌并抽牌</button>
+    </section>
+
+    <section id="resultArea" class="panel hidden">
+      <h2>抽牌结果</h2>
+      <div id="cardsContainer" class="cards-container"></div>
+    </section>
+
+    <section id="readingArea" class="panel hidden">
+      <h2>分层解读</h2>
+      <div id="readingContainer"></div>
+    </section>
+
+    <section id="summaryArea" class="panel hidden">
+      <h2>整体总结</h2>
+      <div id="summaryContainer"></div>
+    </section>
+
+    <button id="resetButton" class="secondary-button hidden">重新占卜</button>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
