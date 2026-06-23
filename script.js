@@ -24,13 +24,13 @@ let currentLanguage = "zh-CN";
 let currentDrawnCards = [];
 
 const questionTypes = [
-  { value: "love", labelKey: "typeLove", focus: "感情关系、沟通、边界和真实感受" },
-  { value: "career", labelKey: "typeCareer", focus: "事业目标、行动节奏、合作和长期规划" },
-  { value: "money", labelKey: "typeMoney", focus: "金钱资源、现实安排、稳定和安全感" },
-  { value: "study", labelKey: "typeStudy", focus: "学习方法、专注度、积累和考试心态" },
-  { value: "relationship", labelKey: "typeRelationship", focus: "人际沟通、界限感、误解和信任" },
-  { value: "self", labelKey: "typeSelf", focus: "内在需求、情绪模式、自我理解和成长方向" },
-  { value: "other", labelKey: "typeOther", focus: "当前处境、选择、提醒和行动方向" }
+  { value: "love", labelKey: "typeLove" },
+  { value: "career", labelKey: "typeCareer" },
+  { value: "money", labelKey: "typeMoney" },
+  { value: "study", labelKey: "typeStudy" },
+  { value: "relationship", labelKey: "typeRelationship" },
+  { value: "self", labelKey: "typeSelf" },
+  { value: "other", labelKey: "typeOther" }
 ];
 
 const spreads = {
@@ -54,7 +54,7 @@ const blockedRules = [
 
 // 读取当前语言字典，缺失时回退到简体中文。
 function t(key) {
-  return (i18n[currentLanguage] && i18n[currentLanguage][key]) || i18n["zh-CN"][key] || key;
+  return getI18nValue(currentLanguage, key) || key;
 }
 
 // 初始化语言选项，并读取用户上次保存的语言。
@@ -102,8 +102,8 @@ function renderSelectOptions() {
 
   const selectedSpread = spreadType.value || currentSpread;
   spreadType.innerHTML = `
-    <option value="one">${t("oneSpread")}</option>
-    <option value="three">${t("threeSpread")}</option>
+    <option value="one">${t("spreads.single")}：${t("spreads.singleDescription")}</option>
+    <option value="three">${t("spreads.threeCard")}：${t("spreads.threeCardDescription")}</option>
   `;
   spreadType.value = selectedSpread;
 }
@@ -222,9 +222,8 @@ function renderCards(drawnCards) {
       <span class="card-position">${t(item.position.labelKey)}</span>
       <span class="orientation-badge ${item.orientation === "reversed" ? "reversed" : ""}">${getOrientationText(item.orientation)}</span>
       <h3 class="card-name">${getDisplayCardName(item.card)}</h3>
-      <p class="card-en">${item.card.nameEn}</p>
       <p class="card-meta">${getArcanaText(item.card)} · ${getSuitText(item.card)} · ${getElementText(item.card)}</p>
-      <p class="keyword-list"><strong>${t("keywordsLabel")}：</strong>${item.card.keywords.join("、")}</p>
+      <p class="keyword-list"><strong>${t("tarot.keywords")}：</strong>${getLocalizedCard(item.card, currentLanguage).keywords.join(" / ")}</p>
     `;
     cardsContainer.appendChild(cardElement);
   });
@@ -237,13 +236,13 @@ function renderReadings(drawnCards) {
   readingContainer.innerHTML = "";
 
   drawnCards.forEach((item) => {
-    const reading = generateCardReading(item, item.position, currentType, currentQuestion);
+    const reading = generateCardReading(item, item.position, currentType, currentQuestion, currentLanguage);
     const block = document.createElement("article");
     block.className = "reading-block";
     block.innerHTML = `
       <h3>${reading.title}</h3>
       <p><strong>${t("positionLabel")}：</strong>${reading.positionMeaning}</p>
-      <p><strong>${t("drawnCardLabel")}：</strong>${item.card.nameCn} / ${item.card.nameEn}，${getArcanaText(item.card)}，${getSuitText(item.card)}，${getElementText(item.card)}。</p>
+      <p><strong>${t("drawnCardLabel")}：</strong>${getLocalizedCard(item.card, currentLanguage).name}，${getArcanaText(item.card)}，${getSuitText(item.card)}，${getElementText(item.card)}。</p>
       <p><strong>${t("meaningLabel")}：</strong>${reading.cardMeaning}</p>
       <p><strong>${t("relationLabel")}：</strong>${reading.relation}</p>
       <p><strong>${t("adviceLabel")}：</strong>${reading.reminder}</p>
@@ -256,7 +255,7 @@ function renderReadings(drawnCards) {
 
 // 综合所有牌生成本地动态整体总结。
 function renderSummary(drawnCards) {
-  const summary = generateDeepOverallSummary(drawnCards, currentType, currentQuestion);
+  const summary = generateDeepOverallSummary(drawnCards, currentType, currentQuestion, currentLanguage);
 
   summaryContainer.innerHTML = `
     <div class="summary-list">
@@ -273,47 +272,41 @@ function renderSummary(drawnCards) {
 
 // 根据当前语言显示牌名，非中文语言优先显示英文牌名。
 function getDisplayCardName(card) {
-  return currentLanguage.startsWith("zh") ? `${card.nameCn} · ${card.nameEn}` : `${card.nameEn} · ${card.nameCn}`;
+  return getLocalizedCard(card, currentLanguage).name;
 }
 
 // 返回正位或逆位的当前语言标签。
 function getOrientationText(orientation) {
-  return orientation === "upright" ? t("orientationUpright") : t("orientationReversed");
+  return orientation === "upright" ? t("tarot.upright") : t("tarot.reversed");
 }
 
 // 返回大阿卡纳或小阿卡纳标签。
 function getArcanaText(card) {
-  return card.arcana === "major" ? t("arcanaMajor") : t("arcanaMinor");
+  return card.arcana === "major" ? t("tarot.majorArcana") : t("tarot.minorArcana");
 }
 
 // 返回牌组标签。
 function getSuitText(card) {
   const keyMap = {
-    major: "suitMajor",
-    wands: "suitWands",
-    cups: "suitCups",
-    swords: "suitSwords",
-    pentacles: "suitPentacles"
+    major: "tarot.majorArcana",
+    wands: "tarot.wands",
+    cups: "tarot.cups",
+    swords: "tarot.swords",
+    pentacles: "tarot.pentacles"
   };
-  return `${t("suitLabel")}：${t(keyMap[card.suit])}`;
+  return `${t("tarot.suit")}：${t(keyMap[card.suit])}`;
 }
 
 // 返回元素标签。
 function getElementText(card) {
   const keyMap = {
-    major: "elementMajor",
-    fire: "elementFire",
-    water: "elementWater",
-    air: "elementAir",
-    earth: "elementEarth"
+    major: "tarot.majorArcana",
+    fire: "tarot.fire",
+    water: "tarot.water",
+    air: "tarot.air",
+    earth: "tarot.earth"
   };
-  return `${t("elementLabel")}：${t(keyMap[card.element])}`;
-}
-
-// 获取问题类型对应的解释焦点。
-function getQuestionTypeFocus() {
-  const matchedType = questionTypes.find((type) => type.value === currentType);
-  return matchedType ? matchedType.focus : questionTypes[questionTypes.length - 1].focus;
+  return `${t("tarot.element")}：${t(keyMap[card.element])}`;
 }
 
 // 只清空结果区域，保留用户输入。
@@ -365,4 +358,36 @@ startButton.addEventListener("click", startReading);
 shuffleActionButton.addEventListener("click", handleShuffleAction);
 resetButton.addEventListener("click", resetAll);
 
+validateI18nCoverage();
 initLanguage();
+
+function validateI18nCoverage() {
+  const requiredI18nPaths = [
+    "app.title", "app.subtitle", "app.disclaimer", "app.languageLabel",
+    "form.questionTitle", "form.questionLabel", "form.questionPlaceholder", "form.questionTypeLabel", "form.spreadLabel", "form.startButton",
+    "questionTypes.love", "questionTypes.career", "questionTypes.study", "questionTypes.money", "questionTypes.relationship", "questionTypes.self", "questionTypes.other",
+    "spreads.single", "spreads.threeCard", "spreads.singleDescription", "spreads.threeCardDescription",
+    "flow.startShuffle", "flow.stopShuffle", "flow.cutAndDraw", "flow.shufflingMessage", "flow.shuffledMessage", "flow.focusMessage", "flow.resetButton", "flow.readyMessage", "flow.drawingMessage", "flow.resultMessage",
+    "result.cardResultTitle", "result.layeredReadingTitle", "result.overallSummaryTitle", "result.currentState", "result.developmentTrend", "result.actionAdvice", "result.warning", "result.reflectionQuestion", "result.positionMeaning", "result.drawnCard", "result.cardMeaning", "result.relationToQuestion", "result.cardReminder",
+    "tarot.upright", "tarot.reversed", "tarot.majorArcana", "tarot.minorArcana", "tarot.wands", "tarot.cups", "tarot.swords", "tarot.pentacles", "tarot.fire", "tarot.water", "tarot.air", "tarot.earth", "tarot.keywords", "tarot.suit", "tarot.element",
+    "positions.past", "positions.present", "positions.future", "positions.single",
+    "safety.blockedTitle", "safety.blockedMessage", "safety.rewriteSuggestions", "safety.medical", "safety.legal", "safety.finance", "safety.gambling", "safety.harm", "safety.death", "safety.certainty", "safety.professionalAdvice",
+    "fallback.unknown", "fallback.noMeaning", "fallback.noAdvice", "fallback.noWarning", "fallback.noQuestion", "fallback.loading", "fallback.error"
+  ];
+  const bankKeys = ["questionTypeBank", "suitBank", "orientationBank", "positionBank", "combinationBank", "actionBank", "warningBank", "reflectionBank", "fallbackBank"];
+  supportedLanguages.forEach(({ code }) => {
+    requiredI18nPaths.forEach((path) => {
+      if (!getI18nValue(code, path)) console.warn(`Missing i18n key: ${code}.${path}`);
+    });
+    tarotDeck.forEach((card) => {
+      const localized = card.localized?.[code];
+      ["name", "keywords", "uprightMeaning", "reversedMeaning", "advice", "warning"].forEach((field) => {
+        if (!localized || !localized[field] || (field === "keywords" && localized[field].length === 0)) console.warn(`Missing tarot localization: ${card.id}.${code}.${field}`);
+      });
+    });
+    const bank = getInterpretationBank(code);
+    bankKeys.forEach((key) => {
+      if (!bank[key]) console.warn(`Missing interpretation bank: ${code}.${key}`);
+    });
+  });
+}

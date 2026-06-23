@@ -175,3 +175,35 @@ interpretationBank.deep = {
   warningBank,
   reflectionBank
 };
+
+function makeLocalizedLines(language, topic, count) {
+  const l = localeText[language];
+  return Array.from({ length: count }, (_, i) => {
+    const focus = [l.current, l.trend, l.action, l.warning, l.reflection][i % 5];
+    return `${topic}: ${focus} ${i + 1}. ${l.resultMsg} ${l.professional}`;
+  });
+}
+function makeLocalizedActionLines(language, topic, suit, count) {
+  const l = localeText[language];
+  return Array.from({ length: count }, (_, i) => `${topic} / ${suit}: ${l.action} ${i + 1}. ${l.focus} ${l.resultMsg}`);
+}
+function buildLocalizedInterpretationBank(language) {
+  const l = localeText[language];
+  const q = { love:l.love, career:l.career, study:l.study, money:l.money, relationship:l.relationship, self:l.self, other:l.other };
+  const s = { major:l.major, wands:l.wands, cups:l.cups, swords:l.swords, pentacles:l.pentacles };
+  const questionTypeBank = Object.fromEntries(Object.entries(q).map(([key, label]) => [key, makeLocalizedLines(language, label, 20)]));
+  const suitBank = Object.fromEntries(Object.entries(s).map(([key, label]) => [key, makeLocalizedLines(language, label, 20)]));
+  const orientationBank = { upright: makeLocalizedLines(language, l.upright, 30), reversed: makeLocalizedLines(language, l.reversed, 30) };
+  const positionBank = { past: makeLocalizedLines(language, l.past, 20), present: makeLocalizedLines(language, l.present, 20), future: makeLocalizedLines(language, l.future, 20), single: makeLocalizedLines(language, l.single, 20), presentHint: makeLocalizedLines(language, l.single, 20) };
+  const combinationKeys = ["manyMajor","manyReversed","manyWands","manyCups","manySwords","manyPentacles","cupsSwords","wandsPentacles","cupsPentacles","swordsWands","energyShift","pastMajor","presentReversed","futureReversed"];
+  const combinationBank = Object.fromEntries(combinationKeys.map(key => [key, makeLocalizedLines(language, `${l.summary} ${key}`, 8)]));
+  const actionCombos = { love:["cups","swords","wands","pentacles"], career:["wands","swords","pentacles","cups"], money:["pentacles","swords"], relationship:["cups","swords"], self:["major","swords","cups"], other:["major","wands","cups","swords","pentacles"] };
+  const actionBank = Object.fromEntries(Object.entries(actionCombos).map(([type, suits]) => [type, Object.fromEntries(suits.map(suit => [suit, makeLocalizedActionLines(language, q[type], s[suit], 6)]))]));
+  const flatActionBank = Object.fromEntries(Object.entries(actionBank).flatMap(([type, suits]) => Object.entries(suits).map(([suit, lines]) => [`${type}_${suit}`, lines])));
+  return { questionTypeBank, suitBank, orientationBank, positionBank, combinationBank, actionBank, flatActionBank, warningBank: makeLocalizedLines(language, l.warning, 30), reflectionBank: makeLocalizedLines(language, l.reflection, 30), fallbackBank: { unknown:l.unknown, noMeaning:l.noMeaning, noAdvice:l.noAdvice, noWarning:l.noWarning, error:l.error } };
+}
+interpretationBank.locales = Object.fromEntries(tarotLanguageCodes.map(code => [code, buildLocalizedInterpretationBank(code)]));
+function getInterpretationBank(language) {
+  if (!interpretationBank.locales[language]) console.warn(`Missing interpretation bank: ${language}`);
+  return interpretationBank.locales[language] || interpretationBank.locales.en;
+}

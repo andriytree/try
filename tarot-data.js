@@ -65,3 +65,64 @@ const tarotDeck = [
     warning: `避免在${suitInfo.nameCn}能量中过度执着单一结果，也不要忽略现实反馈。`
   })))
 ];
+
+const tarotLanguageCodes = ["zh-CN", "zh-TW", "en", "ja", "ko", "es", "fr", "de", "pt", "ru", "ar", "hi"];
+const localizedMajorNames = {
+  "zh-CN": ["愚者","魔术师","女祭司","女皇","皇帝","教皇","恋人","战车","力量","隐士","命运之轮","正义","倒吊人","死神","节制","恶魔","高塔","星星","月亮","太阳","审判","世界"],
+  "zh-TW": ["愚者","魔術師","女祭司","女皇","皇帝","教皇","戀人","戰車","力量","隱士","命運之輪","正義","倒吊人","死神","節制","惡魔","高塔","星星","月亮","太陽","審判","世界"],
+  en: ["The Fool","The Magician","The High Priestess","The Empress","The Emperor","The Hierophant","The Lovers","The Chariot","Strength","The Hermit","Wheel of Fortune","Justice","The Hanged Man","Death","Temperance","The Devil","The Tower","The Star","The Moon","The Sun","Judgement","The World"],
+  ja: ["愚者","魔術師","女司祭","女帝","皇帝","教皇","恋人","戦車","力","隠者","運命の輪","正義","吊るされた男","死神","節制","悪魔","塔","星","月","太陽","審判","世界"],
+  ko: ["바보","마법사","여사제","여제","황제","교황","연인","전차","힘","은둔자","운명의 수레바퀴","정의","매달린 사람","죽음","절제","악마","탑","별","달","태양","심판","세계"],
+  es: ["El Loco","El Mago","La Sacerdotisa","La Emperatriz","El Emperador","El Hierofante","Los Enamorados","El Carro","La Fuerza","El Ermitaño","La Rueda de la Fortuna","La Justicia","El Colgado","La Muerte","La Templanza","El Diablo","La Torre","La Estrella","La Luna","El Sol","El Juicio","El Mundo"],
+  fr: ["Le Mat","Le Magicien","La Papesse","L’Impératrice","L’Empereur","Le Hiérophante","Les Amoureux","Le Chariot","La Force","L’Ermite","La Roue de Fortune","La Justice","Le Pendu","La Mort","Tempérance","Le Diable","La Maison Dieu","L’Étoile","La Lune","Le Soleil","Le Jugement","Le Monde"],
+  de: ["Der Narr","Der Magier","Die Hohepriesterin","Die Herrscherin","Der Herrscher","Der Hierophant","Die Liebenden","Der Wagen","Die Kraft","Der Eremit","Rad des Schicksals","Gerechtigkeit","Der Gehängte","Der Tod","Mäßigkeit","Der Teufel","Der Turm","Der Stern","Der Mond","Die Sonne","Gericht","Die Welt"],
+  pt: ["O Louco","O Mago","A Sacerdotisa","A Imperatriz","O Imperador","O Hierofante","Os Enamorados","O Carro","A Força","O Eremita","A Roda da Fortuna","A Justiça","O Enforcado","A Morte","A Temperança","O Diabo","A Torre","A Estrela","A Lua","O Sol","O Julgamento","O Mundo"],
+  ru: ["Шут","Маг","Верховная Жрица","Императрица","Император","Иерофант","Влюблённые","Колесница","Сила","Отшельник","Колесо Фортуны","Справедливость","Повешенный","Смерть","Умеренность","Дьявол","Башня","Звезда","Луна","Солнце","Суд","Мир"],
+  ar: ["الأحمق","الساحر","الكاهنة العليا","الإمبراطورة","الإمبراطور","الهيروفانت","العشاق","العربة","القوة","الناسك","عجلة الحظ","العدالة","المعلّق","الموت","الاعتدال","الشيطان","البرج","النجمة","القمر","الشمس","الحكم","العالم"],
+  hi: ["मूर्ख","जादूगर","महायाजिका","सम्राज्ञी","सम्राट","हाइरोफैंट","प्रेमी","रथ","शक्ति","सन्यासी","भाग्य चक्र","न्याय","लटका हुआ व्यक्ति","मृत्यु","संयम","शैतान","मीनार","तारा","चंद्रमा","सूर्य","निर्णय","विश्व"]
+};
+const localizedSuits = {
+  "zh-CN": { major:"大阿卡纳", wands:"权杖", cups:"圣杯", swords:"宝剑", pentacles:"星币", ranks:["A","2","3","4","5","6","7","8","9","10","侍从","骑士","皇后","国王"], kw:["觉察","选择","调整","行动"] },
+  "zh-TW": { major:"大阿卡納", wands:"權杖", cups:"聖杯", swords:"寶劍", pentacles:"星幣", ranks:["A","2","3","4","5","6","7","8","9","10","侍從","騎士","皇后","國王"], kw:["覺察","選擇","調整","行動"] },
+  en: { major:"Major Arcana", wands:"Wands", cups:"Cups", swords:"Swords", pentacles:"Pentacles", ranks:["Ace","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Page","Knight","Queen","King"], kw:["awareness","choice","adjustment","action"] },
+  ja: { major:"大アルカナ", wands:"ワンド", cups:"カップ", swords:"ソード", pentacles:"ペンタクル", ranks:["エース","2","3","4","5","6","7","8","9","10","ペイジ","ナイト","クイーン","キング"], kw:["気づき","選択","調整","行動"] },
+  ko: { major:"메이저 아르카나", wands:"완드", cups:"컵", swords:"소드", pentacles:"펜타클", ranks:["에이스","2","3","4","5","6","7","8","9","10","페이지","기사","여왕","왕"], kw:["자각","선택","조정","행동"] },
+  es: { major:"Arcanos mayores", wands:"Bastos", cups:"Copas", swords:"Espadas", pentacles:"Oros", ranks:["As","Dos","Tres","Cuatro","Cinco","Seis","Siete","Ocho","Nueve","Diez","Sota","Caballero","Reina","Rey"], kw:["conciencia","elección","ajuste","acción"] },
+  fr: { major:"Arcanes majeurs", wands:"Bâtons", cups:"Coupes", swords:"Épées", pentacles:"Pentacles", ranks:["As","Deux","Trois","Quatre","Cinq","Six","Sept","Huit","Neuf","Dix","Page","Chevalier","Reine","Roi"], kw:["conscience","choix","ajustement","action"] },
+  de: { major:"Große Arkana", wands:"Stäbe", cups:"Kelche", swords:"Schwerter", pentacles:"Münzen", ranks:["Ass","Zwei","Drei","Vier","Fünf","Sechs","Sieben","Acht","Neun","Zehn","Bube","Ritter","Königin","König"], kw:["Bewusstsein","Wahl","Anpassung","Handlung"] },
+  pt: { major:"Arcanos maiores", wands:"Paus", cups:"Copas", swords:"Espadas", pentacles:"Ouros", ranks:["Ás","Dois","Três","Quatro","Cinco","Seis","Sete","Oito","Nove","Dez","Pajem","Cavaleiro","Rainha","Rei"], kw:["consciência","escolha","ajuste","ação"] },
+  ru: { major:"Старшие арканы", wands:"Жезлы", cups:"Кубки", swords:"Мечи", pentacles:"Пентакли", ranks:["Туз","Двойка","Тройка","Четвёрка","Пятёрка","Шестёрка","Семёрка","Восьмёрка","Девятка","Десятка","Паж","Рыцарь","Королева","Король"], kw:["осознание","выбор","настройка","действие"] },
+  ar: { major:"الأركانا الكبرى", wands:"العصي", cups:"الكؤوس", swords:"السيوف", pentacles:"النجوم الخماسية", ranks:["آس","اثنان","ثلاثة","أربعة","خمسة","ستة","سبعة","ثمانية","تسعة","عشرة","الصفحة","الفارس","الملكة","الملك"], kw:["وعي","اختيار","تعديل","فعل"] },
+  hi: { major:"मेजर अर्काना", wands:"वैंड्स", cups:"कप्स", swords:"स्वॉर्ड्स", pentacles:"पेंटाकल्स", ranks:["ऐस","दो","तीन","चार","पाँच","छह","सात","आठ","नौ","दस","पेज","नाइट","क्वीन","किंग"], kw:["जागरूकता","चयन","समायोजन","कार्य"] }
+};
+const localizedTemplates = {
+  "zh-CN": { up:n=>`${n}正位提示能量较清晰，适合顺势观察和行动。`, rev:n=>`${n}逆位提醒先修正节奏、期待或沟通方式。`, adv:n=>`围绕${n}，选择一个温和而具体的行动。`, warn:n=>`避免把${n}理解成确定答案，仍要看现实反馈。` },
+  "zh-TW": { up:n=>`${n}正位提示能量較清晰，適合順勢觀察和行動。`, rev:n=>`${n}逆位提醒先修正節奏、期待或溝通方式。`, adv:n=>`圍繞${n}，選擇一個溫和而具體的行動。`, warn:n=>`避免把${n}理解成確定答案，仍要看現實回饋。` },
+  en: { up:n=>`${n} upright suggests clearer energy and a chance to respond constructively.`, rev:n=>`${n} reversed asks you to adjust pace, expectations, or communication.`, adv:n=>`Around ${n}, choose one gentle and concrete action.`, warn:n=>`Do not treat ${n} as a fixed answer; check real feedback.` },
+  ja: { up:n=>`${n}の正位置は、流れが比較的明確で建設的に動けることを示します。`, rev:n=>`${n}の逆位置は、ペース、期待、伝え方の調整を促します。`, adv:n=>`${n}をめぐり、穏やかで具体的な一歩を選んでください。`, warn:n=>`${n}を固定された答えとして扱わず、現実の反応を確認してください。` },
+  ko: { up:n=>`${n} 정방향은 에너지가 비교적 분명하며 건설적으로 대응할 수 있음을 보여줍니다.`, rev:n=>`${n} 역방향은 속도, 기대, 소통 방식을 조정하라고 말합니다.`, adv:n=>`${n}와 관련해 부드럽고 구체적인 한 걸음을 선택하세요.`, warn:n=>`${n}를 고정된 답으로 보지 말고 현실의 반응을 확인하세요.` },
+  es: { up:n=>`${n} en posición derecha muestra una energía más clara para responder con cuidado.`, rev:n=>`${n} invertida pide ajustar ritmo, expectativas o comunicación.`, adv:n=>`En torno a ${n}, elige una acción suave y concreta.`, warn:n=>`No tomes ${n} como una respuesta fija; observa la realidad.` },
+  fr: { up:n=>`${n} à l’endroit indique une énergie plus claire pour répondre avec justesse.`, rev:n=>`${n} renversée invite à ajuster le rythme, les attentes ou la communication.`, adv:n=>`Autour de ${n}, choisissez une action douce et concrète.`, warn:n=>`Ne prenez pas ${n} comme une réponse figée; observez les faits.` },
+  de: { up:n=>`${n} aufrecht zeigt klarere Energie für eine bewusste Reaktion.`, rev:n=>`${n} umgekehrt bittet um Anpassung von Tempo, Erwartungen oder Kommunikation.`, adv:n=>`Wähle rund um ${n} eine sanfte und konkrete Handlung.`, warn:n=>`Behandle ${n} nicht als feste Antwort; prüfe reale Rückmeldungen.` },
+  pt: { up:n=>`${n} direto mostra energia mais clara para responder com cuidado.`, rev:n=>`${n} invertido pede ajustar ritmo, expectativas ou comunicação.`, adv:n=>`Em torno de ${n}, escolha uma ação gentil e concreta.`, warn:n=>`Não trate ${n} como resposta fixa; observe a realidade.` },
+  ru: { up:n=>`${n} в прямом положении показывает более ясную энергию для осознанного ответа.`, rev:n=>`${n} в перевёрнутом положении просит настроить темп, ожидания или общение.`, adv:n=>`Вокруг ${n} выберите мягкое и конкретное действие.`, warn:n=>`Не воспринимайте ${n} как фиксированный ответ; смотрите на реальные сигналы.` },
+  ar: { up:n=>`${n} في الوضع المعتدل يشير إلى طاقة أوضح لاستجابة واعية.`, rev:n=>`${n} في الوضع المعكوس يطلب تعديل الوتيرة أو التوقعات أو التواصل.`, adv:n=>`حول ${n} اختر خطوة لطيفة وملموسة.`, warn:n=>`لا تعتبر ${n} إجابة ثابتة؛ راقب الواقع.` },
+  hi: { up:n=>`${n} सीधा रूप अधिक स्पष्ट ऊर्जा और सजग प्रतिक्रिया दिखाता है।`, rev:n=>`${n} उल्टा रूप गति, अपेक्षा या संवाद को समायोजित करने को कहता है।`, adv:n=>`${n} के आसपास एक सौम्य और ठोस कदम चुनें।`, warn:n=>`${n} को स्थिर उत्तर न मानें; वास्तविक प्रतिक्रिया देखें।` }
+};
+function localizeTarotCard(card) {
+  const majorIndex = tarotDeck.filter(c => c.arcana === "major").findIndex(c => c.id === card.id);
+  const minorIndex = card.arcana === "minor" ? minorRanks.findIndex(rank => card.id.endsWith(rank.id)) : -1;
+  card.localized = Object.fromEntries(tarotLanguageCodes.map(code => {
+    const suitInfo = localizedSuits[code];
+    const name = card.arcana === "major" ? localizedMajorNames[code][majorIndex] : `${suitInfo.ranks[minorIndex]} ${suitInfo[card.suit]}`;
+    const template = localizedTemplates[code];
+    return [code, { name, keywords: suitInfo.kw, uprightMeaning: template.up(name), reversedMeaning: template.rev(name), advice: template.adv(name), warning: template.warn(name) }];
+  }));
+  return card;
+}
+tarotDeck.forEach(localizeTarotCard);
+function getLocalizedCard(card, language) {
+  const data = card.localized?.[language] || card.localized?.en;
+  if (!card.localized?.[language]) console.warn(`Missing tarot localization: ${card.id}.${language}`);
+  return data;
+}
