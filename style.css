@@ -251,3 +251,76 @@ select:focus {
     min-height: 260px;
   }
 }
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 14px;
+  padding: 8px 10px;
+  border: 1px solid rgba(224, 188, 108, 0.28);
+  border-radius: 999px;
+  background: rgba(18, 12, 31, 0.78);
+}
+
+.language-switcher label {
+  margin: 0;
+  font-size: 13px;
+}
+
+.language-switcher select {
+  width: auto;
+  min-width: 126px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.shuffle-stage.paused .mini-card {
+  animation-play-state: paused;
+}
+
+.card-d {
+  animation-delay: 0.48s;
+}
+
+.tarot-card.is-reversed {
+  border-color: rgba(185, 139, 255, 0.82);
+}
+
+.tarot-card.is-reversed::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px dashed rgba(185, 139, 255, 0.45);
+  border-radius: 16px;
+  pointer-events: none;
+  transform: rotate(180deg);
+}
+
+.card-meta {
+  color: #f2dca3;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+html[dir="rtl"] body {
+  text-align: right;
+}
+
+html[dir="rtl"] .language-switcher {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+@media (max-width: 420px) {
+  .language-switcher {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .language-switcher select {
+    min-width: 150px;
+  }
+}
