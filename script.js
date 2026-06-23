@@ -26,6 +26,7 @@ let currentDrawnCards = [];
 const questionTypes = [
   { value: "love", labelKey: "typeLove", focus: "感情关系、沟通、边界和真实感受" },
   { value: "career", labelKey: "typeCareer", focus: "事业目标、行动节奏、合作和长期规划" },
+  { value: "money", labelKey: "typeMoney", focus: "金钱资源、现实安排、稳定和安全感" },
   { value: "study", labelKey: "typeStudy", focus: "学习方法、专注度、积累和考试心态" },
   { value: "relationship", labelKey: "typeRelationship", focus: "人际沟通、界限感、误解和信任" },
   { value: "self", labelKey: "typeSelf", focus: "内在需求、情绪模式、自我理解和成长方向" },
@@ -231,21 +232,21 @@ function renderCards(drawnCards) {
   resultArea.classList.remove("hidden");
 }
 
-// 为每张牌生成分层解读。
+// 为每张牌生成本地动态分层解读。
 function renderReadings(drawnCards) {
   readingContainer.innerHTML = "";
 
   drawnCards.forEach((item) => {
-    const meaning = item.orientation === "upright" ? item.card.uprightMeaning : item.card.reversedMeaning;
+    const reading = generateCardReading(item, item.position, currentType, currentQuestion);
     const block = document.createElement("article");
     block.className = "reading-block";
     block.innerHTML = `
-      <h3>${t(item.position.labelKey)}：${getDisplayCardName(item.card)}（${getOrientationText(item.orientation)}）</h3>
-      <p><strong>${t("positionLabel")}：</strong>${t(item.position.meaningKey)}</p>
+      <h3>${reading.title}</h3>
+      <p><strong>${t("positionLabel")}：</strong>${reading.positionMeaning}</p>
       <p><strong>${t("drawnCardLabel")}：</strong>${item.card.nameCn} / ${item.card.nameEn}，${getArcanaText(item.card)}，${getSuitText(item.card)}，${getElementText(item.card)}。</p>
-      <p><strong>${t("meaningLabel")}：</strong>${meaning}</p>
-      <p><strong>${t("relationLabel")}：</strong>${t("relationPrefix")}“${currentQuestion}”，${t("relationMiddle")}${getQuestionTypeFocus()}${t("relationSuffix")}</p>
-      <p><strong>${t("adviceLabel")}：</strong>${item.card.advice} ${item.card.warning}</p>
+      <p><strong>${t("meaningLabel")}：</strong>${reading.cardMeaning}</p>
+      <p><strong>${t("relationLabel")}：</strong>${reading.relation}</p>
+      <p><strong>${t("adviceLabel")}：</strong>${reading.reminder}</p>
     `;
     readingContainer.appendChild(block);
   });
@@ -253,17 +254,17 @@ function renderReadings(drawnCards) {
   readingArea.classList.remove("hidden");
 }
 
-// 综合所有牌生成整体总结。
+// 综合所有牌生成本地动态整体总结。
 function renderSummary(drawnCards) {
-  const keywords = drawnCards.map((item) => item.card.keywords[0]).join("、");
-  const warnings = drawnCards.map((item) => item.card.warning).slice(0, 2).join(" ");
+  const summary = generateOverallSummary(drawnCards, currentType, currentQuestion);
 
   summaryContainer.innerHTML = `
     <div class="summary-list">
-      <p><strong>${t("currentStatus")}：</strong>${t("summaryState")} ${keywords}。</p>
-      <p><strong>${t("developmentTrend")}：</strong>${t("summaryTrend")}</p>
-      <p><strong>${t("actionAdvice")}：</strong>${t("summaryAction")}</p>
-      <p><strong>${t("avoidPitfall")}：</strong>${warnings} ${t("summaryAvoid")}</p>
+      <p><strong>${t("currentStatus")}：</strong>${summary.currentStatus}</p>
+      <p><strong>${t("developmentTrend")}：</strong>${summary.developmentTrend} ${summary.reversedNote}</p>
+      <p><strong>${t("actionAdvice")}：</strong>${summary.actionAdvice}</p>
+      <p><strong>${t("avoidPitfall")}：</strong>${summary.warning}</p>
+      <p><strong>${t("reflectionQuestionLabel")}：</strong>${summary.reflectionQuestion}</p>
     </div>
   `;
 

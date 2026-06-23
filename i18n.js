@@ -52,10 +52,12 @@ const baseI18n = {
   developmentTrend: "发展倾向",
   actionAdvice: "可以采取的行动",
   avoidPitfall: "需要避免的误区",
+  reflectionQuestionLabel: "反思问题",
   oneSpread: "单张牌：适合快速获得当下提示",
   threeSpread: "三张牌：过去 / 现在 / 未来",
   typeLove: "感情",
   typeCareer: "事业",
+  typeMoney: "金钱",
   typeStudy: "学业",
   typeRelationship: "人际",
   typeSelf: "自我探索",
@@ -67,7 +69,7 @@ const baseI18n = {
   positionPresentHintMeaning: "这张牌代表你当前可以关注的核心提醒。",
   positionPastMeaning: "这件事的背景、已经发生的影响、旧模式。",
   positionPresentMeaning: "当前状态、正在显化的能量、主要矛盾。",
-  positionFutureMeaning: "接下来的发展倾向、可能出现的结果与提醒；它不是绝对预测。",
+  positionFutureMeaning: "接下来的发展倾向、可能出现的结果与提醒；它不是确定预测。",
   suitMajor: "大阿卡纳",
   suitWands: "权杖",
   suitCups: "圣杯",
@@ -83,7 +85,6 @@ const baseI18n = {
   relationSuffix: "这些角度观察当前处境。",
   summaryState: "这组牌呈现出的核心状态与这些关键词有关：",
   summaryTrend: "从牌面来看，事情更倾向于通过观察、调整和逐步行动来展开。",
-  summaryAction: "建议你把问题拆小，先处理最清楚、最能行动的一步。",
   summaryAvoid: "避免把塔罗当成确定答案，也不要因为一次结果就做医疗、法律、财务或人生重大决策。",
   safetyEmpty: "请先输入一个适合自我探索的问题。",
   safetyMedical: "这个问题涉及医疗或健康判断，塔罗不适合替代医生或专业诊断。你可以改成：“面对这件事，我可以如何照顾自己的情绪？”",
@@ -92,13 +93,13 @@ const baseI18n = {
   safetySelfHarm: "这个问题听起来可能涉及安全风险。塔罗不能处理自伤或伤害他人的问题。如果你正处在危险中，请尽快联系身边可信任的人或当地紧急求助服务。你也可以改成：“我现在可以做什么来让自己安全一点？”",
   safetyMinorViolence: "这个问题可能涉及未成年人、暴力或违法内容，当前工具不能继续占卜。你可以改成更安全的自我探索问题。",
   safetyDeath: "这个问题涉及死亡、灾难或极端事件预测，塔罗不适合做这类判断。你可以改成：“我如何面对当前的不安？”",
-  safetyDeterministic: "这个问题要求确定性承诺，塔罗更适合自我反思而不是保证结果。你可以改成：“我现在应该如何看待这件事？”或“这件事对我的提醒是什么？”"
+  safetyDeterministic: "这个问题要求确定性承诺，塔罗更适合自我反思而不是承诺结果。你可以改成：“我现在应该如何看待这件事？”或“这件事对我的提醒是什么？”"
 };
 
 const translations = {
   "zh-CN": baseI18n,
   "zh-TW": { appTitle: "塔羅牌占卜", subtitle: "一個用於娛樂和自我反思的塔羅體驗", languageLabel: "語言", questionTitle: "提出你的問題", questionLabel: "你想詢問什麼？", startButton: "開始占卜", shuffleTitle: "洗牌", shuffleStartButton: "開始洗牌", shuffleStopButton: "結束洗牌", cutDrawButton: "切牌並抽牌", resultTitle: "抽牌結果", readingTitle: "分層解讀", summaryTitle: "整體總結", resetButton: "重新占卜", orientationUpright: "正位", orientationReversed: "逆位" },
-  en: { appTitle: "Tarot Reading", subtitle: "A tarot experience for entertainment and self-reflection", disclaimer: "This tool is for entertainment and self-reflection only. It is not medical, legal, financial, therapy, or major life decision advice.", languageLabel: "Language", questionTitle: "Ask your question", questionLabel: "What would you like to ask?", questionPlaceholder: "Example: How should I look at this relationship now?", questionTypeLabel: "Question type", spreadLabel: "Spread", startButton: "Start reading", shuffleTitle: "Shuffle", shuffleReadyPrompt: "Your question passed the check. Start shuffling when you are ready.", shuffleStartButton: "Start shuffling", shuffleActivePrompt: "Focus on your question and feel the deck flowing.", shuffleStopButton: "Stop shuffling", shuffleDonePrompt: "Shuffling is complete. Cut and draw the cards.", cutDrawButton: "Cut and draw", resultTitle: "Card result", readingTitle: "Layered reading", summaryTitle: "Summary", resetButton: "Read again", orientationUpright: "Upright", orientationReversed: "Reversed", oneSpread: "One card: a quick present hint", threeSpread: "Three cards: past / present / future", typeLove: "Love", typeCareer: "Career", typeStudy: "Study", typeRelationship: "Relationships", typeSelf: "Self-discovery", typeOther: "Other" },
+  en: { appTitle: "Tarot Reading", subtitle: "A tarot experience for entertainment and self-reflection", disclaimer: "This tool is for entertainment and self-reflection only. It is not medical, legal, financial, therapy, or major life decision advice.", languageLabel: "Language", questionTitle: "Ask your question", questionLabel: "What would you like to ask?", questionPlaceholder: "Example: How should I look at this relationship now?", questionTypeLabel: "Question type", spreadLabel: "Spread", startButton: "Start reading", shuffleTitle: "Shuffle", shuffleReadyPrompt: "Your question passed the check. Start shuffling when you are ready.", shuffleStartButton: "Start shuffling", shuffleActivePrompt: "Focus on your question and feel the deck flowing.", shuffleStopButton: "Stop shuffling", shuffleDonePrompt: "Shuffling is complete. Cut and draw the cards.", cutDrawButton: "Cut and draw", resultTitle: "Card result", readingTitle: "Layered reading", summaryTitle: "Summary", resetButton: "Read again", orientationUpright: "Upright", orientationReversed: "Reversed", oneSpread: "One card: a quick present hint", threeSpread: "Three cards: past / present / future", typeLove: "Love", typeCareer: "Career", typeMoney: "Money", typeStudy: "Study", typeRelationship: "Relationships", typeSelf: "Self-discovery", typeOther: "Other" },
   ja: { appTitle: "タロット占い", subtitle: "娯楽と自己省察のためのタロット体験", languageLabel: "言語", questionTitle: "質問を書く", questionLabel: "何を聞きたいですか？", startButton: "占いを始める", shuffleStartButton: "シャッフル開始", shuffleStopButton: "シャッフル終了", cutDrawButton: "カットして引く", resultTitle: "結果", readingTitle: "解釈", summaryTitle: "まとめ", resetButton: "もう一度" },
   ko: { appTitle: "타로 리딩", subtitle: "오락과 자기 성찰을 위한 타로 경험", languageLabel: "언어", questionTitle: "질문하기", questionLabel: "무엇을 묻고 싶나요?", startButton: "리딩 시작", shuffleStartButton: "셔플 시작", shuffleStopButton: "셔플 종료", cutDrawButton: "컷하고 뽑기", resultTitle: "카드 결과", readingTitle: "해석", summaryTitle: "요약", resetButton: "다시 보기" },
   es: { appTitle: "Lectura de Tarot", subtitle: "Una experiencia de tarot para entretenimiento y reflexión", languageLabel: "Idioma", questionTitle: "Haz tu pregunta", questionLabel: "¿Qué quieres preguntar?", startButton: "Comenzar", shuffleStartButton: "Empezar a barajar", shuffleStopButton: "Terminar barajado", cutDrawButton: "Cortar y sacar", resultTitle: "Resultado", readingTitle: "Lectura", summaryTitle: "Resumen", resetButton: "Nueva lectura" },
