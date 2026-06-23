@@ -256,15 +256,15 @@ function renderReadings(drawnCards) {
 
 // 综合所有牌生成本地动态整体总结。
 function renderSummary(drawnCards) {
-  const summary = generateOverallSummary(drawnCards, currentType, currentQuestion);
+  const summary = generateDeepOverallSummary(drawnCards, currentType, currentQuestion);
 
   summaryContainer.innerHTML = `
     <div class="summary-list">
-      <p><strong>${t("currentStatus")}：</strong>${summary.currentStatus}</p>
-      <p><strong>${t("developmentTrend")}：</strong>${summary.developmentTrend} ${summary.reversedNote}</p>
-      <p><strong>${t("actionAdvice")}：</strong>${summary.actionAdvice}</p>
-      <p><strong>${t("avoidPitfall")}：</strong>${summary.warning}</p>
-      <p><strong>${t("reflectionQuestionLabel")}：</strong>${summary.reflectionQuestion}</p>
+      <p class="summary-section"><strong>${t("currentStatus")}：</strong>${summary.currentState}</p>
+      <p class="summary-section"><strong>${t("developmentTrend")}：</strong>${summary.developmentTrend}</p>
+      <p class="summary-section"><strong>${t("actionAdvice")}：</strong>${summary.actionAdvice}</p>
+      <p class="summary-section"><strong>${t("avoidPitfall")}：</strong>${summary.warning}</p>
+      <p class="summary-section reflection-card"><strong>${t("reflectionQuestionLabel")}：</strong>${summary.reflectionQuestion}</p>
     </div>
   `;
 
