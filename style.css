@@ -343,3 +343,80 @@ html[dir="rtl"] .language-switcher {
   border-radius: 16px;
   background: rgba(224, 188, 108, 0.09);
 }
+
+.step-indicator {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 16px 0 18px;
+}
+
+.step-indicator-item {
+  padding: 10px 8px;
+  border: 1px solid rgba(224, 188, 108, 0.25);
+  border-radius: 999px;
+  color: #cdbde8;
+  background: rgba(18, 12, 31, 0.72);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.step-indicator-item.active {
+  color: #1b1028;
+  background: linear-gradient(135deg, #f7e3a1, #c99532);
+  box-shadow: 0 8px 20px rgba(201, 149, 50, 0.18);
+}
+
+.step-page {
+  display: none;
+}
+
+.step-page.active {
+  display: block;
+  animation: stepFade 0.24s ease both;
+}
+
+@keyframes stepFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.process-summary p {
+  margin-bottom: 0;
+  line-height: 1.75;
+  color: #e7d9ff;
+}
+
+.result-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.result-actions .secondary-button {
+  margin-top: 0;
+}
+
+@media (max-width: 430px) {
+  .app-shell {
+    padding: 18px 12px 32px;
+  }
+
+  .hero-card {
+    padding: 24px 16px;
+  }
+
+  .step-indicator {
+    gap: 6px;
+  }
+
+  .step-indicator-item {
+    padding: 9px 5px;
+    font-size: 11px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+}

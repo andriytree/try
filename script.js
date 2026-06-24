@@ -15,6 +15,15 @@ const readingContainer = document.querySelector("#readingContainer");
 const summaryArea = document.querySelector("#summaryArea");
 const summaryContainer = document.querySelector("#summaryContainer");
 const resetButton = document.querySelector("#resetButton");
+const stepInputLabel = document.querySelector("#stepInputLabel");
+const stepProcessLabel = document.querySelector("#stepProcessLabel");
+const stepResultLabel = document.querySelector("#stepResultLabel");
+const processTitle = document.querySelector("#processTitle");
+const questionSummary = document.querySelector("#questionSummary");
+const backToInputButton = document.querySelector("#backToInputButton");
+const backToProcessButton = document.querySelector("#backToProcessButton");
+const saveResultButton = document.querySelector("#saveResultButton");
+const shareResultButton = document.querySelector("#shareResultButton");
 
 let appState = "idle";
 let currentQuestion = "";
@@ -22,6 +31,22 @@ let currentType = "love";
 let currentSpread = "one";
 let currentLanguage = "zh-CN";
 let currentDrawnCards = [];
+
+
+const stepActionLabels = {
+  "zh-CN": { save: "保存结果", share: "分享结果" },
+  "zh-TW": { save: "保存結果", share: "分享結果" },
+  en: { save: "Save result", share: "Share result" },
+  ja: { save: "結果を保存", share: "結果を共有" },
+  ko: { save: "결과 저장", share: "결과 공유" },
+  es: { save: "Guardar resultado", share: "Compartir resultado" },
+  fr: { save: "Enregistrer", share: "Partager" },
+  de: { save: "Ergebnis speichern", share: "Ergebnis teilen" },
+  pt: { save: "Salvar resultado", share: "Compartilhar" },
+  ru: { save: "Сохранить результат", share: "Поделиться" },
+  ar: { save: "حفظ النتيجة", share: "مشاركة النتيجة" },
+  hi: { save: "परिणाम सहेजें", share: "परिणाम साझा करें" }
+};
 
 const questionTypes = [
   { value: "love", labelKey: "typeLove" },
@@ -81,6 +106,7 @@ function initLanguage() {
 function applyLanguage() {
   document.documentElement.lang = currentLanguage;
   document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+  document.title = t("app.title");
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = t(element.dataset.i18n);
@@ -91,6 +117,8 @@ function applyLanguage() {
   });
 
   renderSelectOptions();
+  renderStepCopy();
+  renderProcessSummary();
   updateShuffleControls();
 }
 
@@ -141,13 +169,19 @@ function startReading() {
 
   safetyMessage.textContent = "";
   appState = "ready";
+  tarotFlowState.savedQuestion = currentQuestion;
+  tarotFlowState.savedQuestionType = currentType;
+  tarotFlowState.savedSpread = currentSpread;
   startButton.disabled = true;
   shuffleArea.classList.remove("hidden");
+  renderProcessSummary();
+  setFlowStep("process");
   updateShuffleControls();
 }
 
 // 根据状态机刷新洗牌提示、按钮文字和动效状态。
 function updateShuffleControls() {
+  shuffleActionButton.disabled = false;
   if (appState === "ready") {
     shufflePrompt.textContent = t("shuffleReadyPrompt");
     shuffleActionButton.textContent = t("shuffleStartButton");
@@ -159,6 +193,11 @@ function updateShuffleControls() {
   } else if (appState === "shuffled") {
     shufflePrompt.textContent = t("shuffleDonePrompt");
     shuffleActionButton.textContent = t("cutDrawButton");
+    shuffleStage.classList.add("paused");
+  } else if (appState === "reading") {
+    shufflePrompt.textContent = t("flow.resultMessage");
+    shuffleActionButton.textContent = t("result.overallSummaryTitle");
+    shuffleActionButton.disabled = true;
     shuffleStage.classList.add("paused");
   }
 }
@@ -183,11 +222,12 @@ function cutAndDrawCards() {
   currentDrawnCards = drawCards(positions);
   appState = "reading";
 
-  shuffleArea.classList.add("hidden");
+  tarotFlowState.drawnCards = currentDrawnCards;
   renderCards(currentDrawnCards);
   renderReadings(currentDrawnCards);
   renderSummary(currentDrawnCards);
   resetButton.classList.remove("hidden");
+  setFlowStep("result");
 }
 
 // 从复制后的 78 张牌组中随机抽牌，确保同一次占卜不会重复。
@@ -320,6 +360,7 @@ function resetResultOnly() {
   readingContainer.innerHTML = "";
   summaryContainer.innerHTML = "";
   currentDrawnCards = [];
+  tarotFlowState.drawnCards = [];
 }
 
 // 重置整个页面，方便重新开始一次占卜。
@@ -332,13 +373,19 @@ function resetAll() {
   startButton.disabled = false;
   safetyMessage.textContent = "";
   appState = "idle";
+  tarotFlowState.savedQuestion = "";
+  tarotFlowState.savedQuestionType = "love";
+  tarotFlowState.savedSpread = "one";
   resetResultOnly();
+  setFlowStep("input");
 }
 
 languageSelect.addEventListener("change", () => {
   currentLanguage = languageSelect.value;
   localStorage.setItem("tarotLanguage", currentLanguage);
   applyLanguage();
+  renderStepCopy();
+  renderProcessSummary();
   if (currentDrawnCards.length > 0) {
     renderCards(currentDrawnCards);
     renderReadings(currentDrawnCards);
@@ -357,9 +404,33 @@ spreadType.addEventListener("change", () => {
 startButton.addEventListener("click", startReading);
 shuffleActionButton.addEventListener("click", handleShuffleAction);
 resetButton.addEventListener("click", resetAll);
+backToInputButton.addEventListener("click", () => setFlowStep("input"));
+backToProcessButton.addEventListener("click", () => { setFlowStep("process"); updateShuffleControls(); });
+saveResultButton.addEventListener("click", () => alert(t("fallback.loading")));
+shareResultButton.addEventListener("click", () => alert(t("fallback.loading")));
+
+
+function renderStepCopy() {
+  stepInputLabel.textContent = `1 ${t("form.questionTitle")}`;
+  stepProcessLabel.textContent = `2 ${t("flow.focusMessage")}`;
+  stepResultLabel.textContent = `3 ${t("result.overallSummaryTitle")}`;
+  processTitle.textContent = t("flow.focusMessage");
+  backToInputButton.textContent = t("form.questionTitle");
+  backToProcessButton.textContent = t("flow.focusMessage");
+  saveResultButton.textContent = (stepActionLabels[currentLanguage] || stepActionLabels.en).save;
+  shareResultButton.textContent = (stepActionLabels[currentLanguage] || stepActionLabels.en).share;
+}
+
+function renderProcessSummary() {
+  const question = tarotFlowState.savedQuestion || currentQuestion || questionInput.value.trim();
+  const typeLabel = t(questionTypes.find((type) => type.value === (tarotFlowState.savedQuestionType || currentType))?.labelKey || "typeOther");
+  const spreadLabel = (tarotFlowState.savedSpread || currentSpread) === "three" ? t("spreads.threeCard") : t("spreads.single");
+  questionSummary.textContent = question ? `${t("form.questionLabel")}：${question} · ${t("form.questionTypeLabel")}：${typeLabel} · ${t("form.spreadLabel")}：${spreadLabel}` : t("fallback.noQuestion");
+}
 
 validateI18nCoverage();
 initLanguage();
+setFlowStep("input");
 
 function validateI18nCoverage() {
   const requiredI18nPaths = [
