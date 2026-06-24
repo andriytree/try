@@ -82,7 +82,7 @@ function t(key) {
   return getI18nValue(currentLanguage, key) || key;
 }
 
-// 初始化语言选项，并读取用户上次保存的语言。
+// 初始化语言选项，并按“手动选择 > 本地档案 > 设备语言 > 英文”的优先级选择语言。
 function initLanguage() {
   supportedLanguages.forEach((language) => {
     const option = document.createElement("option");
@@ -91,13 +91,7 @@ function initLanguage() {
     languageSelect.appendChild(option);
   });
 
-  const savedLanguage = localStorage.getItem("tarotLanguage");
-  const browserLanguage = navigator.language;
-  currentLanguage = supportedLanguages.some((item) => item.code === savedLanguage)
-    ? savedLanguage
-    : supportedLanguages.some((item) => item.code === browserLanguage)
-      ? browserLanguage
-      : "zh-CN";
+  currentLanguage = detectPreferredLanguage(StorageAdapter.getProfile());
   languageSelect.value = currentLanguage;
   applyLanguage();
 }
@@ -120,6 +114,7 @@ function applyLanguage() {
   renderStepCopy();
   renderProcessSummary();
   updateShuffleControls();
+  if (typeof renderProfileLanguageText === "function") renderProfileLanguageText(currentLanguage);
 }
 
 // 根据当前语言重新渲染问题类型和牌阵选项。
@@ -382,15 +377,8 @@ function resetAll() {
 
 languageSelect.addEventListener("change", () => {
   currentLanguage = languageSelect.value;
-  localStorage.setItem("tarotLanguage", currentLanguage);
-  applyLanguage();
-  renderStepCopy();
-  renderProcessSummary();
-  if (currentDrawnCards.length > 0) {
-    renderCards(currentDrawnCards);
-    renderReadings(currentDrawnCards);
-    renderSummary(currentDrawnCards);
-  }
+  StorageAdapter.saveManualLanguage(currentLanguage);
+  rerenderForLanguageChange();
 });
 
 questionType.addEventListener("change", () => {
@@ -430,7 +418,28 @@ function renderProcessSummary() {
 
 validateI18nCoverage();
 initLanguage();
+initUserProfileUi({
+  getLanguage: () => currentLanguage,
+  onProfileSaved: (profile) => {
+    if (!StorageAdapter.getManualLanguage()) {
+      currentLanguage = matchSupportedLanguage(profile.defaultLanguage) || currentLanguage;
+      languageSelect.value = currentLanguage;
+      rerenderForLanguageChange();
+    }
+  }
+});
 setFlowStep("input");
+
+function rerenderForLanguageChange() {
+  applyLanguage();
+  renderStepCopy();
+  renderProcessSummary();
+  if (currentDrawnCards.length > 0) {
+    renderCards(currentDrawnCards);
+    renderReadings(currentDrawnCards);
+    renderSummary(currentDrawnCards);
+  }
+}
 
 function validateI18nCoverage() {
   const requiredI18nPaths = [

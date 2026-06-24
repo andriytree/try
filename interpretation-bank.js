@@ -176,31 +176,80 @@ interpretationBank.deep = {
   reflectionBank
 };
 
-function makeLocalizedLines(language, topic, count) {
-  const l = localeText[language];
+function makeLocalizedLines(language, topic, count, category = "general") {
+  const l = localeText[language] || localeText.en;
+  const openings = [
+    `${topic} ${l.current}`,
+    `${topic} ${l.trend}`,
+    `${topic} ${l.action}`,
+    `${topic} ${l.warning}`,
+    `${topic} ${l.reflection}`
+  ];
+  const bodies = [
+    `${l.focus} ${l.cardMeaning} ${l.relation}`,
+    `${l.positionMeaning} ${l.drawnCard} ${l.reminder}`,
+    `${l.keywords} ${l.element} ${l.suit}`,
+    `${l.past} ${l.present} ${l.future}`,
+    `${l.action} ${l.warning} ${l.reflection}`
+  ];
+  const endings = {
+    reflection: [
+      `${topic} ${l.reflection}?`,
+      `${l.relation} ${topic}?`,
+      `${l.action} ${topic}?`,
+      `${l.warning} ${topic}?`,
+      `${l.current} ${topic}?`
+    ],
+    warning: [
+      `${topic}: ${l.warning}. ${l.focus}`,
+      `${topic}: ${l.warning}. ${l.relation}`,
+      `${topic}: ${l.warning}. ${l.reminder}`,
+      `${topic}: ${l.warning}. ${l.current}`,
+      `${topic}: ${l.warning}. ${l.trend}`
+    ],
+    general: []
+  };
   return Array.from({ length: count }, (_, i) => {
-    const focus = [l.current, l.trend, l.action, l.warning, l.reflection][i % 5];
-    return `${topic}: ${focus} ${i + 1}. ${l.resultMsg} ${l.professional}`;
+    if (category === "reflection") return endings.reflection[i % endings.reflection.length];
+    if (category === "warning") return endings.warning[i % endings.warning.length];
+    return `${openings[i % openings.length]} — ${bodies[(i + 2) % bodies.length]}.`;
   });
 }
 function makeLocalizedActionLines(language, topic, suit, count) {
-  const l = localeText[language];
-  return Array.from({ length: count }, (_, i) => `${topic} / ${suit}: ${l.action} ${i + 1}. ${l.focus} ${l.resultMsg}`);
+  const l = localeText[language] || localeText.en;
+  const openings = [`${l.action}`, `${l.focus}`, `${l.current}`, `${l.trend}`, `${l.reminder}`];
+  const moves = [`${l.cardMeaning}`, `${l.relation}`, `${l.positionMeaning}`, `${l.keywords}`, `${l.element}`];
+  return Array.from({ length: count }, (_, i) => `${topic} / ${suit}: ${openings[i % openings.length]} — ${moves[(i + 1) % moves.length]}.`);
 }
 function buildLocalizedInterpretationBank(language) {
-  const l = localeText[language];
+  const l = localeText[language] || localeText.en;
   const q = { love:l.love, career:l.career, study:l.study, money:l.money, relationship:l.relationship, self:l.self, other:l.other };
   const s = { major:l.major, wands:l.wands, cups:l.cups, swords:l.swords, pentacles:l.pentacles };
+  const comboLabels = {
+    manyMajor: `${l.major} ${l.summary}`,
+    manyReversed: `${l.reversed} ${l.warning}`,
+    manyWands: `${l.wands} ${l.action}`,
+    manyCups: `${l.cups} ${l.relation}`,
+    manySwords: `${l.swords} ${l.warning}`,
+    manyPentacles: `${l.pentacles} ${l.current}`,
+    cupsSwords: `${l.cups} ${l.swords}`,
+    wandsPentacles: `${l.wands} ${l.pentacles}`,
+    cupsPentacles: `${l.cups} ${l.pentacles}`,
+    swordsWands: `${l.swords} ${l.wands}`,
+    energyShift: `${l.trend} ${l.element}`,
+    pastMajor: `${l.past} ${l.major}`,
+    presentReversed: `${l.present} ${l.reversed}`,
+    futureReversed: `${l.future} ${l.reversed}`
+  };
   const questionTypeBank = Object.fromEntries(Object.entries(q).map(([key, label]) => [key, makeLocalizedLines(language, label, 20)]));
   const suitBank = Object.fromEntries(Object.entries(s).map(([key, label]) => [key, makeLocalizedLines(language, label, 20)]));
   const orientationBank = { upright: makeLocalizedLines(language, l.upright, 30), reversed: makeLocalizedLines(language, l.reversed, 30) };
   const positionBank = { past: makeLocalizedLines(language, l.past, 20), present: makeLocalizedLines(language, l.present, 20), future: makeLocalizedLines(language, l.future, 20), single: makeLocalizedLines(language, l.single, 20), presentHint: makeLocalizedLines(language, l.single, 20) };
-  const combinationKeys = ["manyMajor","manyReversed","manyWands","manyCups","manySwords","manyPentacles","cupsSwords","wandsPentacles","cupsPentacles","swordsWands","energyShift","pastMajor","presentReversed","futureReversed"];
-  const combinationBank = Object.fromEntries(combinationKeys.map(key => [key, makeLocalizedLines(language, `${l.summary} ${key}`, 8)]));
+  const combinationBank = Object.fromEntries(Object.entries(comboLabels).map(([key, label]) => [key, makeLocalizedLines(language, label, 8)]));
   const actionCombos = { love:["cups","swords","wands","pentacles"], career:["wands","swords","pentacles","cups"], money:["pentacles","swords"], relationship:["cups","swords"], self:["major","swords","cups"], other:["major","wands","cups","swords","pentacles"] };
   const actionBank = Object.fromEntries(Object.entries(actionCombos).map(([type, suits]) => [type, Object.fromEntries(suits.map(suit => [suit, makeLocalizedActionLines(language, q[type], s[suit], 6)]))]));
   const flatActionBank = Object.fromEntries(Object.entries(actionBank).flatMap(([type, suits]) => Object.entries(suits).map(([suit, lines]) => [`${type}_${suit}`, lines])));
-  return { questionTypeBank, suitBank, orientationBank, positionBank, combinationBank, actionBank, flatActionBank, warningBank: makeLocalizedLines(language, l.warning, 30), reflectionBank: makeLocalizedLines(language, l.reflection, 30), fallbackBank: { unknown:l.unknown, noMeaning:l.noMeaning, noAdvice:l.noAdvice, noWarning:l.noWarning, error:l.error } };
+  return { questionTypeBank, suitBank, orientationBank, positionBank, combinationBank, actionBank, flatActionBank, warningBank: makeLocalizedLines(language, l.warning, 30, "warning"), reflectionBank: makeLocalizedLines(language, l.reflection, 30, "reflection"), fallbackBank: { unknown:l.unknown, noMeaning:l.noMeaning, noAdvice:l.noAdvice, noWarning:l.noWarning, error:l.error } };
 }
 interpretationBank.locales = Object.fromEntries(tarotLanguageCodes.map(code => [code, buildLocalizedInterpretationBank(code)]));
 function getInterpretationBank(language) {

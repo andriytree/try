@@ -7,10 +7,43 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <section id="profileSetupPage" class="profile-setup hidden" aria-live="polite">
+    <form id="profileForm" class="profile-card">
+      <h2 id="profileTitle"></h2>
+      <p id="profileLocalNote" class="profile-note"></p>
+
+      <label id="profileNicknameLabel" for="profileNickname"></label>
+      <input id="profileNickname" type="text" maxlength="24" autocomplete="nickname">
+
+      <label id="profileAvatarLabel"></label>
+      <div id="profileAvatarOptions" class="avatar-options"></div>
+
+      <label id="profileBirthdayLabel" for="profileBirthday"></label>
+      <input id="profileBirthday" type="date">
+
+      <label id="profileGenderLabel" for="profileGender"></label>
+      <select id="profileGender"></select>
+
+      <label id="profileLanguageLabel" for="profileDefaultLanguage"></label>
+      <select id="profileDefaultLanguage"></select>
+
+      <label class="checkbox-row">
+        <input id="profileSaveHistory" type="checkbox" checked>
+        <span id="profileHistoryLabel"></span>
+      </label>
+
+      <p id="profileError" class="safety-message" role="alert"></p>
+      <button id="profileSaveButton" class="primary-button" type="submit"></button>
+    </form>
+  </section>
+
   <main class="app-shell">
-    <div class="language-switcher" aria-label="Language selector">
-      <label for="languageSelect" data-i18n="languageLabel"></label>
-      <select id="languageSelect"></select>
+    <div class="top-controls">
+      <div class="language-switcher" aria-label="Language selector">
+        <label for="languageSelect" data-i18n="languageLabel"></label>
+        <select id="languageSelect"></select>
+      </div>
+      <button id="profileEditButton" class="profile-edit-button" type="button"></button>
     </div>
 
     <section class="hero-card">
@@ -90,11 +123,14 @@
     </section>
   </main>
 
+  <script src="storage-adapter.js"></script>
+  <script src="locale-detector.js"></script>
   <script src="tarot-data.js"></script>
   <script src="i18n.js"></script>
   <script src="interpretation-bank.js"></script>
   <script src="reading-engine.js"></script>
   <script src="deep-summary-engine.js"></script>
+  <script src="user-profile.js"></script>
   <script src="app-state.js"></script>
   <script src="script.js"></script>
 </body>
