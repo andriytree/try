@@ -92,7 +92,9 @@ function populateProfileForm(profile, language) {
   document.querySelector("#profileNickname").value = profile?.nickname || "";
   document.querySelector("#profileBirthday").value = profile?.birthday || "";
   document.querySelector("#profileSaveHistory").checked = profile?.saveHistory ?? true;
-  renderProfileLanguageText(profile?.defaultLanguage || language);
+  // Profile defaults control the form selection, not the language of the
+  // currently visible interface. A manual language choice must win here.
+  renderProfileLanguageText(language);
   document.querySelector("#profileGender").value = profile?.gender || "";
   document.querySelector("#profileDefaultLanguage").value = profile?.defaultLanguage || language;
   renderAvatarOptions(profile?.avatar || avatarOptions[0]);

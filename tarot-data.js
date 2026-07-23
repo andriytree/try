@@ -1,128 +1,307 @@
-const majorArcana = [
-  ["major-00-fool", "愚者", "The Fool", ["开始", "自由", "未知", "冒险"], "新的阶段正在展开，适合保持开放与好奇，在探索中学习。", "可能存在准备不足、冲动或逃避现实的倾向，需要先看清风险。", "带着初心行动，但先确认必要条件。", "避免只凭一时兴起做决定。"],
-  ["major-01-magician", "魔术师", "The Magician", ["行动", "资源", "创造", "表达"], "你可能已经拥有可用资源，适合把想法转化为具体行动。", "资源分散、表达不清或行动力不足可能正在影响进展。", "盘点手中的资源，选择一个最具体的切入点。", "避免空想太多却迟迟不开始。"],
-  ["major-02-high-priestess", "女祭司", "The High Priestess", ["直觉", "沉静", "观察", "内在智慧"], "适合倾听内在感受，暂时不急着做出判断。", "你可能忽略了真实感受，或被表象与焦虑干扰。", "先观察事实和感受，再决定下一步。", "避免被情绪或猜测牵着走。"],
-  ["major-03-empress", "女皇", "The Empress", ["滋养", "关系", "丰盛", "接纳"], "温柔照顾、稳定支持和自然生长会带来帮助。", "可能存在过度付出、依赖舒适区或忽略自身边界。", "给关系或计划更多耐心和滋养。", "避免只照顾他人而忘了自己。"],
-  ["major-04-emperor", "皇帝", "The Emperor", ["秩序", "责任", "边界", "规划"], "建立规则、承担责任和清晰计划有助于推进。", "过度控制或缺少结构都可能让事情失衡。", "把目标拆成明确步骤，并设定边界。", "避免用强硬掩盖不安。"],
-  ["major-05-hierophant", "教皇", "The Hierophant", ["传统", "学习", "信念", "指引"], "可以参考经验、规则或值得信任的建议。", "旧有观念可能不再适合当下，需要重新辨别。", "向可靠来源学习，也保留自己的判断。", "避免盲目顺从权威或惯例。"],
-  ["major-06-lovers", "恋人", "The Lovers", ["选择", "关系", "价值观", "连接"], "真诚连接和价值观对齐是当前重点。", "关系失衡、犹豫或需求不清可能造成拉扯。", "诚实面对自己的选择与期待。", "避免为了迎合而忽略真实感受。"],
-  ["major-07-chariot", "战车", "The Chariot", ["前进", "意志", "控制", "突破"], "集中力量前进，自律和方向感会带来突破。", "方向混乱、急躁或过度用力可能降低效率。", "先确定方向，再把力量集中到关键行动。", "避免一边犹豫一边硬冲。"],
-  ["major-08-strength", "力量", "Strength", ["勇气", "耐心", "温柔", "内在力量"], "稳定、耐心和温柔的力量能帮助你处理挑战。", "信心不足、情绪压抑或过度逞强需要被看见。", "用温和但坚定的方式回应压力。", "避免把脆弱误认为失败。"],
-  ["major-09-hermit", "隐士", "The Hermit", ["独处", "反思", "寻找", "沉淀"], "放慢脚步，通过独处和反思看清方向。", "过度封闭或逃避必要沟通可能让你更孤立。", "给自己安静整理的时间。", "避免把退缩当作真正的解决。"],
-  ["major-10-wheel", "命运之轮", "Wheel of Fortune", ["变化", "周期", "机会", "转折"], "局势可能进入变化期，可以顺势调整。", "暂时的不稳定或重复模式需要被觉察。", "观察变化中的机会，灵活调整策略。", "避免抗拒一切变化。"],
-  ["major-11-justice", "正义", "Justice", ["公平", "判断", "因果", "清晰"], "用理性和事实看待问题，重视责任与平衡。", "偏见、信息不完整或回避责任可能影响判断。", "把事实、责任和需求分别写清楚。", "避免只站在单一立场下结论。"],
-  ["major-12-hanged-man", "倒吊人", "The Hanged Man", ["暂停", "换位", "等待", "释放"], "暂停推进，从不同角度重新理解处境。", "无谓拖延、抗拒改变或不愿放下旧方式可能卡住你。", "换一个角度看问题，允许暂时等待。", "避免把等待变成逃避。"],
-  ["major-13-death", "死神", "Death", ["结束", "转化", "放下", "更新"], "一个阶段可能正在结束，更新也在酝酿。", "你可能仍抓着已经不适合的模式，不愿承认变化。", "温和地告别旧状态，为新阶段腾空间。", "避免把结束等同于失败。"],
-  ["major-14-temperance", "节制", "Temperance", ["平衡", "整合", "疗愈", "耐心"], "温和、渐进地整合资源与情绪会更有效。", "失衡、过度消耗或节奏过快需要被调整。", "寻找中间道路，不必急于求成。", "避免极端化处理问题。"],
-  ["major-15-devil", "恶魔", "The Devil", ["束缚", "欲望", "依赖", "阴影"], "看见让自己受困的习惯、执念或依赖，是松动的开始。", "你可能正在被恐惧、欲望或旧模式牵制。", "诚实辨认自己被什么困住。", "避免用短暂满足掩盖长期问题。"],
-  ["major-16-tower", "高塔", "The Tower", ["冲击", "真相", "重建", "觉醒"], "旧结构可能需要被看见和调整，变化中也有重建空间。", "你可能已经感到不安，却仍在回避必要改变。", "先承认真实状况，再决定如何重建。", "避免继续粉饰已经不稳的结构。"],
-  ["major-17-star", "星星", "The Star", ["希望", "疗愈", "信任", "愿景"], "温和的希望正在出现，长期修复和成长值得信任。", "暂时缺少信心，需要重新连接自己的愿望。", "给自己恢复信任的时间。", "避免因为短期低落否定长期可能。"],
-  ["major-18-moon", "月亮", "The Moon", ["不确定", "潜意识", "情绪", "迷雾"], "承认不确定感，先分辨情绪、想象和事实。", "迷雾正在散开，但仍需要谨慎确认信息。", "慢一点，确认信息后再回应。", "避免在焦虑中自行脑补结论。"],
-  ["major-19-sun", "太阳", "The Sun", ["清晰", "活力", "喜悦", "坦诚"], "坦诚、积极和清晰的方式可能带来更多活力。", "不要勉强乐观，可以先处理被遮住的真实感受。", "让事情回到简单、清楚和真诚。", "避免用表面乐观压住问题。"],
-  ["major-20-judgement", "审判", "Judgement", ["觉醒", "复盘", "召唤", "更新"], "复盘过去，从新的理解中做出更成熟的回应。", "自我批判过重，或还没有准备好面对重要呼唤。", "总结经验，给自己一次重新选择的机会。", "避免一直停留在后悔里。"],
-  ["major-21-world", "世界", "The World", ["完成", "整合", "成就", "新阶段"], "阶段性完成和整合正在显现，可以看见自己的成长。", "某个循环尚未真正收尾，仍需要补足最后一步。", "庆祝进展，同时完成必要收尾。", "避免急着开启新阶段而忽略整合。"]
-];
-
-const minorSuits = {
-  wands: { nameCn: "权杖", nameEn: "Wands", element: "fire", themes: "事业、行动、热情、创造力、推进力", keywords: ["行动", "热情", "创造", "推进"] },
-  cups: { nameCn: "圣杯", nameEn: "Cups", element: "water", themes: "感情、人际、情绪、关系、内在感受", keywords: ["情绪", "关系", "感受", "连接"] },
-  swords: { nameCn: "宝剑", nameEn: "Swords", element: "air", themes: "思维、冲突、判断、压力、沟通、理性", keywords: ["思考", "沟通", "判断", "压力"] },
-  pentacles: { nameCn: "星币", nameEn: "Pentacles", element: "earth", themes: "金钱、物质、工作、资源、稳定、安全感", keywords: ["资源", "稳定", "工作", "现实"] }
-};
-
-const minorRanks = [
-  { id: "ace", nameCn: "A", nameEn: "Ace", focus: "新的开始", upright: "新的机会或动力正在出现，适合认真感受它的潜力。", reversed: "开始的力量可能还不稳定，需要补足准备或信心。" },
-  { id: "02", nameCn: "2", nameEn: "Two", focus: "选择与平衡", upright: "你可能正在面对选择，平衡不同需求会很重要。", reversed: "摇摆、迟疑或失衡可能让进展暂时放慢。" },
-  { id: "03", nameCn: "3", nameEn: "Three", focus: "扩展与合作", upright: "事情有扩展空间，合作或外部支持可能带来帮助。", reversed: "合作不顺、期待落差或计划不足需要被调整。" },
-  { id: "04", nameCn: "4", nameEn: "Four", focus: "稳定与结构", upright: "稳定基础正在形成，可以把注意力放在安全感和结构上。", reversed: "过度保守或基础不稳可能限制新的可能。" },
-  { id: "05", nameCn: "5", nameEn: "Five", focus: "冲突与挑战", upright: "挑战正在显现，它提醒你看见问题并重新调整。", reversed: "冲突有缓和机会，但仍需要诚实面对核心原因。" },
-  { id: "06", nameCn: "6", nameEn: "Six", focus: "调整与支持", upright: "支持、修复或阶段性改善正在出现，可以接纳帮助。", reversed: "你可能还在旧状态中徘徊，需要主动调整关系或资源流动。" },
-  { id: "07", nameCn: "7", nameEn: "Seven", focus: "坚持与评估", upright: "需要坚持，也需要评估当前策略是否仍然有效。", reversed: "防御、怀疑或策略混乱可能消耗你的力量。" },
-  { id: "08", nameCn: "8", nameEn: "Eight", focus: "推进与练习", upright: "持续练习和稳定推进会带来可见变化。", reversed: "节奏受阻、重复低效或急于求成需要被看见。" },
-  { id: "09", nameCn: "9", nameEn: "Nine", focus: "积累与临界点", upright: "经验正在累积，离阶段性成果或领悟更近一步。", reversed: "疲惫、防备或过度担心可能影响你看见已有成果。" },
-  { id: "10", nameCn: "10", nameEn: "Ten", focus: "完成与负荷", upright: "一个阶段接近完成，同时也要关注责任和压力。", reversed: "负担过重或收尾困难提醒你重新分配精力。" },
-  { id: "page", nameCn: "侍从", nameEn: "Page", focus: "学习与消息", upright: "适合保持学习心态，新的消息或尝试可能出现。", reversed: "经验不足、信息不清或心态不稳需要更多练习。" },
-  { id: "knight", nameCn: "骑士", nameEn: "Knight", focus: "行动与追求", upright: "行动欲望增强，可以带着目标继续推进。", reversed: "冲动、急躁或方向过窄可能带来消耗。" },
-  { id: "queen", nameCn: "皇后", nameEn: "Queen", focus: "成熟与接纳", upright: "成熟的照顾、理解和掌控力正在发挥作用。", reversed: "过度承担、情绪内耗或边界不清需要被调整。" },
-  { id: "king", nameCn: "国王", nameEn: "King", focus: "掌控与责任", upright: "适合以成熟、稳定和负责任的方式处理现实。", reversed: "控制欲、僵化或逃避责任可能让局面失衡。" }
-];
-
-const tarotDeck = [
-  ...majorArcana.map(([id, nameCn, nameEn, keywords, uprightMeaning, reversedMeaning, advice, warning]) => ({
-    id, nameCn, nameEn, arcana: "major", suit: "major", element: "major", keywords, uprightMeaning, reversedMeaning, advice, warning
-  })),
-  ...Object.entries(minorSuits).flatMap(([suit, suitInfo]) => minorRanks.map((rank) => ({
-    id: `${suit}-${rank.id}`,
-    nameCn: `${suitInfo.nameCn}${rank.nameCn}`,
-    nameEn: `${rank.nameEn} of ${suitInfo.nameEn}`,
-    arcana: "minor",
-    suit,
-    element: suitInfo.element,
-    keywords: [rank.focus, ...suitInfo.keywords.slice(0, 3)],
-    uprightMeaning: `${rank.upright} 在${suitInfo.themes}相关议题中，它提示你关注“${rank.focus}”。`,
-    reversedMeaning: `${rank.reversed} 在${suitInfo.themes}相关议题中，它提醒你放慢并重新整理。`,
-    advice: `围绕${suitInfo.themes}，你可以从“${rank.focus}”这个角度采取一个温和而具体的行动。`,
-    warning: `避免在${suitInfo.nameCn}能量中过度执着单一结果，也不要忽略现实反馈。`
-  })))
-];
+/*
+ * Local semantic corpus for the complete 78-card deck.
+ *
+ * Every row below is an independent card profile. Minor Arcana meanings are
+ * intentionally not derived from a rank template plus a suit template. The
+ * small builder at the bottom expands each profile into the same rich,
+ * localized schema so the reading engines can select card-specific variants.
+ */
 
 const tarotLanguageCodes = ["zh-CN", "zh-TW", "en", "ja", "ko", "es", "fr", "de", "pt", "ru", "ar", "hi"];
-const localizedMajorNames = {
-  "zh-CN": ["愚者","魔术师","女祭司","女皇","皇帝","教皇","恋人","战车","力量","隐士","命运之轮","正义","倒吊人","死神","节制","恶魔","高塔","星星","月亮","太阳","审判","世界"],
-  "zh-TW": ["愚者","魔術師","女祭司","女皇","皇帝","教皇","戀人","戰車","力量","隱士","命運之輪","正義","倒吊人","死神","節制","惡魔","高塔","星星","月亮","太陽","審判","世界"],
-  en: ["The Fool","The Magician","The High Priestess","The Empress","The Emperor","The Hierophant","The Lovers","The Chariot","Strength","The Hermit","Wheel of Fortune","Justice","The Hanged Man","Death","Temperance","The Devil","The Tower","The Star","The Moon","The Sun","Judgement","The World"],
-  ja: ["愚者","魔術師","女司祭","女帝","皇帝","教皇","恋人","戦車","力","隠者","運命の輪","正義","吊るされた男","死神","節制","悪魔","塔","星","月","太陽","審判","世界"],
-  ko: ["바보","마법사","여사제","여제","황제","교황","연인","전차","힘","은둔자","운명의 수레바퀴","정의","매달린 사람","죽음","절제","악마","탑","별","달","태양","심판","세계"],
-  es: ["El Loco","El Mago","La Sacerdotisa","La Emperatriz","El Emperador","El Hierofante","Los Enamorados","El Carro","La Fuerza","El Ermitaño","La Rueda de la Fortuna","La Justicia","El Colgado","La Muerte","La Templanza","El Diablo","La Torre","La Estrella","La Luna","El Sol","El Juicio","El Mundo"],
-  fr: ["Le Mat","Le Magicien","La Papesse","L’Impératrice","L’Empereur","Le Hiérophante","Les Amoureux","Le Chariot","La Force","L’Ermite","La Roue de Fortune","La Justice","Le Pendu","La Mort","Tempérance","Le Diable","La Maison Dieu","L’Étoile","La Lune","Le Soleil","Le Jugement","Le Monde"],
-  de: ["Der Narr","Der Magier","Die Hohepriesterin","Die Herrscherin","Der Herrscher","Der Hierophant","Die Liebenden","Der Wagen","Die Kraft","Der Eremit","Rad des Schicksals","Gerechtigkeit","Der Gehängte","Der Tod","Mäßigkeit","Der Teufel","Der Turm","Der Stern","Der Mond","Die Sonne","Gericht","Die Welt"],
-  pt: ["O Louco","O Mago","A Sacerdotisa","A Imperatriz","O Imperador","O Hierofante","Os Enamorados","O Carro","A Força","O Eremita","A Roda da Fortuna","A Justiça","O Enforcado","A Morte","A Temperança","O Diabo","A Torre","A Estrela","A Lua","O Sol","O Julgamento","O Mundo"],
-  ru: ["Шут","Маг","Верховная Жрица","Императрица","Император","Иерофант","Влюблённые","Колесница","Сила","Отшельник","Колесо Фортуны","Справедливость","Повешенный","Смерть","Умеренность","Дьявол","Башня","Звезда","Луна","Солнце","Суд","Мир"],
-  ar: ["الأحمق","الساحر","الكاهنة العليا","الإمبراطورة","الإمبراطور","الهيروفانت","العشاق","العربة","القوة","الناسك","عجلة الحظ","العدالة","المعلّق","الموت","الاعتدال","الشيطان","البرج","النجمة","القمر","الشمس","الحكم","العالم"],
-  hi: ["मूर्ख","जादूगर","महायाजिका","सम्राज्ञी","सम्राट","हाइरोफैंट","प्रेमी","रथ","शक्ति","सन्यासी","भाग्य चक्र","न्याय","लटका हुआ व्यक्ति","मृत्यु","संयम","शैतान","मीनार","तारा","चंद्रमा","सूर्य","निर्णय","विश्व"]
+
+const tarotSuitElements = {
+  major: "major",
+  wands: "fire",
+  cups: "water",
+  swords: "air",
+  pentacles: "earth"
 };
-const localizedSuits = {
-  "zh-CN": { major:"大阿卡纳", wands:"权杖", cups:"圣杯", swords:"宝剑", pentacles:"星币", ranks:["A","2","3","4","5","6","7","8","9","10","侍从","骑士","皇后","国王"], kw:["觉察","选择","调整","行动"] },
-  "zh-TW": { major:"大阿卡納", wands:"權杖", cups:"聖杯", swords:"寶劍", pentacles:"星幣", ranks:["A","2","3","4","5","6","7","8","9","10","侍從","騎士","皇后","國王"], kw:["覺察","選擇","調整","行動"] },
-  en: { major:"Major Arcana", wands:"Wands", cups:"Cups", swords:"Swords", pentacles:"Pentacles", ranks:["Ace","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Page","Knight","Queen","King"], kw:["awareness","choice","adjustment","action"] },
-  ja: { major:"大アルカナ", wands:"ワンド", cups:"カップ", swords:"ソード", pentacles:"ペンタクル", ranks:["エース","2","3","4","5","6","7","8","9","10","ペイジ","ナイト","クイーン","キング"], kw:["気づき","選択","調整","行動"] },
-  ko: { major:"메이저 아르카나", wands:"완드", cups:"컵", swords:"소드", pentacles:"펜타클", ranks:["에이스","2","3","4","5","6","7","8","9","10","페이지","기사","여왕","왕"], kw:["자각","선택","조정","행동"] },
-  es: { major:"Arcanos mayores", wands:"Bastos", cups:"Copas", swords:"Espadas", pentacles:"Oros", ranks:["As","Dos","Tres","Cuatro","Cinco","Seis","Siete","Ocho","Nueve","Diez","Sota","Caballero","Reina","Rey"], kw:["conciencia","elección","ajuste","acción"] },
-  fr: { major:"Arcanes majeurs", wands:"Bâtons", cups:"Coupes", swords:"Épées", pentacles:"Pentacles", ranks:["As","Deux","Trois","Quatre","Cinq","Six","Sept","Huit","Neuf","Dix","Page","Chevalier","Reine","Roi"], kw:["conscience","choix","ajustement","action"] },
-  de: { major:"Große Arkana", wands:"Stäbe", cups:"Kelche", swords:"Schwerter", pentacles:"Münzen", ranks:["Ass","Zwei","Drei","Vier","Fünf","Sechs","Sieben","Acht","Neun","Zehn","Bube","Ritter","Königin","König"], kw:["Bewusstsein","Wahl","Anpassung","Handlung"] },
-  pt: { major:"Arcanos maiores", wands:"Paus", cups:"Copas", swords:"Espadas", pentacles:"Ouros", ranks:["Ás","Dois","Três","Quatro","Cinco","Seis","Sete","Oito","Nove","Dez","Pajem","Cavaleiro","Rainha","Rei"], kw:["consciência","escolha","ajuste","ação"] },
-  ru: { major:"Старшие арканы", wands:"Жезлы", cups:"Кубки", swords:"Мечи", pentacles:"Пентакли", ranks:["Туз","Двойка","Тройка","Четвёрка","Пятёрка","Шестёрка","Семёрка","Восьмёрка","Девятка","Десятка","Паж","Рыцарь","Королева","Король"], kw:["осознание","выбор","настройка","действие"] },
-  ar: { major:"الأركانا الكبرى", wands:"العصي", cups:"الكؤوس", swords:"السيوف", pentacles:"النجوم الخماسية", ranks:["آس","اثنان","ثلاثة","أربعة","خمسة","ستة","سبعة","ثمانية","تسعة","عشرة","الصفحة","الفارس","الملكة","الملك"], kw:["وعي","اختيار","تعديل","فعل"] },
-  hi: { major:"मेजर अर्काना", wands:"वैंड्स", cups:"कप्स", swords:"स्वॉर्ड्स", pentacles:"पेंटाकल्स", ranks:["ऐस","दो","तीन","चार","पाँच","छह","सात","आठ","नौ","दस","पेज","नाइट","क्वीन","किंग"], kw:["जागरूकता","चयन","समायोजन","कार्य"] }
+
+// Major Arcana also carry elemental correspondences; treating every trump as
+// the pseudo-element "major" erased a useful layer of spread analysis.
+const tarotMajorElements = {
+  "major-00-fool": "air",
+  "major-01-magician": "air",
+  "major-02-high-priestess": "water",
+  "major-03-empress": "earth",
+  "major-04-emperor": "fire",
+  "major-05-hierophant": "earth",
+  "major-06-lovers": "air",
+  "major-07-chariot": "water",
+  "major-08-strength": "fire",
+  "major-09-hermit": "earth",
+  "major-10-wheel": "fire",
+  "major-11-justice": "air",
+  "major-12-hanged-man": "water",
+  "major-13-death": "water",
+  "major-14-temperance": "fire",
+  "major-15-devil": "earth",
+  "major-16-tower": "fire",
+  "major-17-star": "air",
+  "major-18-moon": "water",
+  "major-19-sun": "fire",
+  "major-20-judgement": "fire",
+  "major-21-world": "earth"
 };
-const localizedTemplates = {
-  "zh-CN": { up:n=>`${n}正位提示能量较清晰，适合顺势观察和行动。`, rev:n=>`${n}逆位提醒先修正节奏、期待或沟通方式。`, adv:n=>`围绕${n}，选择一个温和而具体的行动。`, warn:n=>`避免把${n}理解成确定答案，仍要看现实反馈。` },
-  "zh-TW": { up:n=>`${n}正位提示能量較清晰，適合順勢觀察和行動。`, rev:n=>`${n}逆位提醒先修正節奏、期待或溝通方式。`, adv:n=>`圍繞${n}，選擇一個溫和而具體的行動。`, warn:n=>`避免把${n}理解成確定答案，仍要看現實回饋。` },
-  en: { up:n=>`${n} upright suggests clearer energy and a chance to respond constructively.`, rev:n=>`${n} reversed asks you to adjust pace, expectations, or communication.`, adv:n=>`Around ${n}, choose one gentle and concrete action.`, warn:n=>`Do not treat ${n} as a fixed answer; check real feedback.` },
-  ja: { up:n=>`${n}の正位置は、流れが比較的明確で建設的に動けることを示します。`, rev:n=>`${n}の逆位置は、ペース、期待、伝え方の調整を促します。`, adv:n=>`${n}をめぐり、穏やかで具体的な一歩を選んでください。`, warn:n=>`${n}を固定された答えとして扱わず、現実の反応を確認してください。` },
-  ko: { up:n=>`${n} 정방향은 에너지가 비교적 분명하며 건설적으로 대응할 수 있음을 보여줍니다.`, rev:n=>`${n} 역방향은 속도, 기대, 소통 방식을 조정하라고 말합니다.`, adv:n=>`${n}와 관련해 부드럽고 구체적인 한 걸음을 선택하세요.`, warn:n=>`${n}를 고정된 답으로 보지 말고 현실의 반응을 확인하세요.` },
-  es: { up:n=>`${n} en posición derecha muestra una energía más clara para responder con cuidado.`, rev:n=>`${n} invertida pide ajustar ritmo, expectativas o comunicación.`, adv:n=>`En torno a ${n}, elige una acción suave y concreta.`, warn:n=>`No tomes ${n} como una respuesta fija; observa la realidad.` },
-  fr: { up:n=>`${n} à l’endroit indique une énergie plus claire pour répondre avec justesse.`, rev:n=>`${n} renversée invite à ajuster le rythme, les attentes ou la communication.`, adv:n=>`Autour de ${n}, choisissez une action douce et concrète.`, warn:n=>`Ne prenez pas ${n} comme une réponse figée; observez les faits.` },
-  de: { up:n=>`${n} aufrecht zeigt klarere Energie für eine bewusste Reaktion.`, rev:n=>`${n} umgekehrt bittet um Anpassung von Tempo, Erwartungen oder Kommunikation.`, adv:n=>`Wähle rund um ${n} eine sanfte und konkrete Handlung.`, warn:n=>`Behandle ${n} nicht als feste Antwort; prüfe reale Rückmeldungen.` },
-  pt: { up:n=>`${n} direto mostra energia mais clara para responder com cuidado.`, rev:n=>`${n} invertido pede ajustar ritmo, expectativas ou comunicação.`, adv:n=>`Em torno de ${n}, escolha uma ação gentil e concreta.`, warn:n=>`Não trate ${n} como resposta fixa; observe a realidade.` },
-  ru: { up:n=>`${n} в прямом положении показывает более ясную энергию для осознанного ответа.`, rev:n=>`${n} в перевёрнутом положении просит настроить темп, ожидания или общение.`, adv:n=>`Вокруг ${n} выберите мягкое и конкретное действие.`, warn:n=>`Не воспринимайте ${n} как фиксированный ответ; смотрите на реальные сигналы.` },
-  ar: { up:n=>`${n} في الوضع المعتدل يشير إلى طاقة أوضح لاستجابة واعية.`, rev:n=>`${n} في الوضع المعكوس يطلب تعديل الوتيرة أو التوقعات أو التواصل.`, adv:n=>`حول ${n} اختر خطوة لطيفة وملموسة.`, warn:n=>`لا تعتبر ${n} إجابة ثابتة؛ راقب الواقع.` },
-  hi: { up:n=>`${n} सीधा रूप अधिक स्पष्ट ऊर्जा और सजग प्रतिक्रिया दिखाता है।`, rev:n=>`${n} उल्टा रूप गति, अपेक्षा या संवाद को समायोजित करने को कहता है।`, adv:n=>`${n} के आसपास एक सौम्य और ठोस कदम चुनें।`, warn:n=>`${n} को स्थिर उत्तर न मानें; वास्तविक प्रतिक्रिया देखें।` }
-};
-function localizeTarotCard(card) {
-  const majorIndex = tarotDeck.filter(c => c.arcana === "major").findIndex(c => c.id === card.id);
-  const minorIndex = card.arcana === "minor" ? minorRanks.findIndex(rank => card.id.endsWith(rank.id)) : -1;
-  card.localized = Object.fromEntries(tarotLanguageCodes.map(code => {
-    const suitInfo = localizedSuits[code];
-    const name = card.arcana === "major" ? localizedMajorNames[code][majorIndex] : `${suitInfo.ranks[minorIndex]} ${suitInfo[card.suit]}`;
-    const template = localizedTemplates[code];
-    return [code, { name, keywords: suitInfo.kw, uprightMeaning: template.up(name), reversedMeaning: template.rev(name), advice: template.adv(name), warning: template.warn(name) }];
-  }));
-  return card;
+
+function splitSemanticList(value) {
+  return String(value || "").split("|").map((item) => item.trim()).filter(Boolean);
 }
-tarotDeck.forEach(localizeTarotCard);
-function getLocalizedCard(card, language) {
-  const data = card.localized?.[language] || card.localized?.en;
-  if (!card.localized?.[language]) console.warn(`Missing tarot localization: ${card.id}.${language}`);
-  return data;
+
+function defineSemanticCard(id, suit, rank, number, archetype, symbols, enCore, enUp, enRev, zhCore, zhUp, zhRev) {
+  const arcana = suit === "major" ? "major" : "minor";
+  const uprightConcepts = splitSemanticList(enUp);
+  const reversedConcepts = splitSemanticList(enRev);
+  return {
+    id,
+    arcana,
+    suit,
+    rank,
+    element: suit === "major" ? tarotMajorElements[id] : tarotSuitElements[suit],
+    number,
+    archetype,
+    symbols: splitSemanticList(symbols),
+    themes: uprightConcepts.slice(0, 6),
+    semantic: {
+      en: { core: enCore, upright: uprightConcepts, reversed: reversedConcepts },
+      "zh-CN": { core: zhCore, upright: splitSemanticList(zhUp), reversed: splitSemanticList(zhRev) }
+    }
+  };
 }
+
+const tarotSemanticProfiles = [
+  defineSemanticCard("major-00-fool", "major", "00", 0, "the free spirit at a threshold", "cliff|white rose|small dog|travel bundle", "entering an unknown chapter with curiosity while staying awake to consequence", "beginning|freedom|curiosity|adventure|trust|spontaneity|openness|potential", "recklessness|escape|poor preparation|naivety|impulsive risk|lost focus|irresponsibility|fear of beginning", "带着好奇进入未知阶段，同时对选择的后果保持清醒", "开始|自由|好奇|冒险|信任|自发|开放|潜能", "鲁莽|逃避|准备不足|天真|冒进|失焦|不负责任|害怕开始"),
+  defineSemanticCard("major-01-magician", "major", "01", 1, "the focused creator", "wand|four suit tools|infinity sign|garden", "turning available skill, attention, and language into a deliberate result", "willpower|resources|creation|expression|focus|skill|manifestation|initiative", "manipulation|distraction|empty promises|unused ability|self-doubt|deception|loose planning|blocked action", "把已有能力、注意力与表达集中起来，转化为明确成果", "意志|资源|创造|表达|专注|技巧|显化|主动", "操控|分心|空谈|能力闲置|自我怀疑|欺瞒|计划松散|行动受阻"),
+  defineSemanticCard("major-02-high-priestess", "major", "02", 2, "the keeper of inner knowledge", "black and white pillars|veil|moon|scroll", "listening beneath appearances until intuition and evidence can be distinguished", "intuition|stillness|mystery|subconscious|inner wisdom|patience|receptivity|discernment", "blocked intuition|hidden information|overthinking|emotional noise|passivity|isolation|ignored feelings|mixed signals", "穿过表象倾听内在，并分辨直觉、情绪与事实", "直觉|静观|秘密|潜意识|内在智慧|耐心|感受力|辨别", "直觉受阻|信息隐藏|过度猜测|情绪噪音|被动|自我隔离|忽视感受|表里不一"),
+  defineSemanticCard("major-03-empress", "major", "03", 3, "the embodied nurturer", "wheat|forest|crown of stars|Venus shield", "allowing care, creativity, and material support to make something genuinely grow", "abundance|nurture|creation|sensuality|receptivity|embodiment|care|resource growth", "overgiving|smothering|creative block|self-neglect|dependence|stagnant comfort|poor boundaries|scarcity fear", "让照顾、创造与现实资源共同孕育真正的成长", "丰盛|滋养|创造|感受力|身体经验|接纳|照顾|资源孕育", "过度付出|窒息式照顾|创造受阻|忽略自己|依赖|安逸停滞|边界不清|匮乏焦虑"),
+  defineSemanticCard("major-04-emperor", "major", "04", 4, "the responsible builder", "stone throne|ram heads|armor|mountains", "creating dependable order through boundaries, planning, and accountable authority", "structure|authority|responsibility|boundaries|planning|stability|discipline|protection", "rigidity|control|domination|weak structure|avoidance of duty|inflexibility|power struggle|emotional distance", "以边界、规划与责任建立可依靠的秩序", "结构|权威|责任|边界|规划|稳定|纪律|保护", "僵化|控制欲|支配|结构薄弱|逃避责任|不知变通|权力冲突|情感疏离"),
+  defineSemanticCard("major-05-hierophant", "major", "05", 5, "the transmitter of shared values", "keys|temple pillars|raised hand|students", "examining which traditions, teachings, and institutions deserve trust and continuation", "tradition|rules|belief|teaching|institution|values|learning|inheritance", "dogma|blind obedience|rebellion without thought|stale values|misused authority|conformity|private belief|broken trust", "辨认哪些传统、教导与制度值得信任和传承", "传统|规则|信念|教导|权威体系|制度|价值观|学习传承", "教条|盲从|无思考的反叛|陈旧价值|滥用权威|从众|信念私有化|信任破裂"),
+  defineSemanticCard("major-06-lovers", "major", "06", 6, "the conscious chooser", "two figures|angel|tree of knowledge|mountain", "making a relational choice that aligns desire, honesty, and personal values", "union|choice|values|attraction|honesty|alignment|intimacy|commitment", "misalignment|avoidance of choice|dishonesty|dependency|conflicting values|temptation|projection|unequal commitment", "让关系选择同时对齐欲望、诚实与个人价值", "结合|选择|价值观|吸引|诚实|一致|亲密|承诺", "价值错位|逃避选择|不诚实|依赖|价值冲突|诱惑|投射|承诺失衡"),
+  defineSemanticCard("major-07-chariot", "major", "07", 7, "the disciplined victor", "two sphinxes|armor|star canopy|city walls", "directing opposing forces toward one chosen destination through discipline", "willpower|control|progress|direction|self-discipline|integration|victory drive|action rhythm", "loss of direction|overcontrol|aggression|scattered force|impatience|inner conflict|stalling|reckless speed", "用纪律整合相反力量，并把行动导向同一个目的地", "意志|掌控|推进|方向|自律|对立整合|胜利欲|行动节奏", "方向丢失|过度控制|攻击性|力量分散|急躁|内在冲突|停滞|危险加速"),
+  defineSemanticCard("major-08-strength", "major", "08", 8, "the compassionate tamer", "lion|infinity sign|white robe|flowers", "meeting instinct and pressure with patient courage instead of force", "courage|gentleness|patience|self-command|compassion|confidence|instinct|endurance", "self-doubt|suppressed anger|bravado|loss of nerve|shame|emotional force|impatience|depleted courage", "用耐心与温柔的勇气面对本能和压力，而非强行压制", "勇气|温柔|耐心|自我掌握|慈悲|信心|本能|韧性", "自我怀疑|压抑愤怒|逞强|失去勇气|羞耻|情绪强迫|不耐烦|勇气耗尽"),
+  defineSemanticCard("major-09-hermit", "major", "09", 9, "the solitary guide", "lantern|staff|mountain peak|grey cloak", "withdrawing from noise long enough to find an honest inner direction", "solitude|reflection|wisdom|search|discernment|inner guidance|study|maturity", "isolation|avoidance|loneliness|refusal of counsel|overanalysis|withdrawal|lost direction|social disconnection", "暂时离开噪音，以诚实反思找到内在方向", "独处|反思|智慧|寻找|辨别|内在指引|研习|成熟", "孤立|逃避|孤独感|拒绝建议|过度分析|退缩|方向迷失|人际断连"),
+  defineSemanticCard("major-10-wheel", "major", "10", 10, "the turning cycle", "wheel|four fixed signs|sphinx|rising and falling figures", "responding intelligently to a turning cycle without pretending to control every variable", "cycle|change|turning point|opportunity|timing|adaptation|fortune|pattern recognition", "repeated pattern|resistance to change|bad timing|instability|loss of control|delay|fatalism|missed opening", "在周期转动时顺势调整，而不假装能控制所有变量", "周期|变化|转折|机会|时机|适应|运势|模式识别", "模式重演|抗拒变化|时机不佳|不稳定|失去控制|延迟|宿命感|错过窗口"),
+  defineSemanticCard("major-11-justice", "major", "11", 11, "the clear-eyed arbiter", "scales|sword|red robe|square crown", "weighing facts, consequences, and responsibility before reaching a fair decision", "fairness|truth|accountability|cause and effect|clarity|balance|ethics|decision", "bias|denial|unfairness|avoided consequence|incomplete evidence|self-justification|dishonesty|harsh judgment", "在决定前衡量事实、后果与责任，追求真正的公平", "公平|真相|责任|因果|清晰|平衡|伦理|判断", "偏见|否认|不公|逃避后果|证据不足|自我合理化|不诚实|苛刻评判"),
+  defineSemanticCard("major-12-hanged-man", "major", "12", 12, "the willing suspender", "inverted figure|halo|living tree|crossed leg", "releasing the need to force progress so a different perspective can emerge", "pause|surrender|new perspective|suspension|release|patience|reframing|voluntary sacrifice", "stalling|martyrdom|pointless delay|resistance|victim stance|indecision|sacrifice without purpose|refusal to let go", "放下强推进度的需要，让新的视角真正出现", "暂停|臣服|换位视角|悬置|释放|耐心|重新诠释|主动取舍", "停滞|受害者姿态|无谓拖延|抗拒|自我牺牲成瘾|犹豫|无意义付出|拒绝放下"),
+  defineSemanticCard("major-13-death", "major", "13", 13, "the uncompromising transformer", "white rose banner|skeleton rider|setting sun|fallen crown", "accepting a real ending so energy can leave an exhausted form and renew", "ending|transformation|release|transition|closure|renewal|shedding|irreversibility", "resistance to ending|stagnation|fear of change|unfinished goodbye|clinging|delayed transition|decay|repeating the past", "承认真实的结束，让能量离开耗尽的形式并重新流动", "结束|转化|放下|过渡|收尾|更新|蜕皮|不可逆改变", "抗拒结束|停滞|害怕变化|告别未完|抓取不放|转型延迟|腐化|重复过去"),
+  defineSemanticCard("major-14-temperance", "major", "14", 14, "the patient alchemist", "two cups|one foot on land|one foot in water|path to light", "combining unlike needs at a sustainable pace until a workable third way appears", "balance|integration|moderation|healing|patience|adaptation|flow|right proportion", "excess|imbalance|poor timing|fragmentation|impatience|overcorrection|conflicting priorities|drained reserves", "以可持续节奏整合不同需要，调和出可行的第三条路", "平衡|整合|节制|疗愈|耐心|适应|流动|合宜比例", "过度|失衡|时机不当|碎片化|急躁|过度修正|优先级冲突|储备耗尽"),
+  defineSemanticCard("major-15-devil", "major", "15", 15, "the revealer of bondage", "loose chains|horned figure|inverted torch|dark pedestal", "naming the desire, fear, or bargain that keeps choice feeling impossible", "attachment|desire|shadow|temptation|material fixation|dependency|taboo truth|personal agency", "compulsion|denial|addiction|shame|coercion|powerlessness|toxic bargain|fear-based control", "说出让选择看似不可能的欲望、恐惧或交换条件", "依附|欲望|阴影|诱惑|物质执着|依赖|禁忌真相|个人能动性", "强迫|否认|成瘾|羞耻|胁迫|无力感|有毒交换|恐惧控制"),
+  defineSemanticCard("major-16-tower", "major", "16", 16, "the truth-breaking storm", "lightning|falling crown|burning tower|falling figures", "letting a false or unstable structure break so reality can be rebuilt honestly", "revelation|disruption|collapse|truth|liberation|shock|rebuilding|structural change", "avoided crisis|fear of collapse|delayed truth|internal upheaval|damage control|denial|fragile structure|repeated shock", "让虚假或不稳的结构破裂，以诚实现实重新建造", "揭示|冲击|崩塌|真相|解放|震荡|重建|结构改变", "逃避危机|害怕崩塌|真相延迟|内在动荡|只顾止损|否认|脆弱结构|冲击重演"),
+  defineSemanticCard("major-17-star", "major", "17", 17, "the naked source of hope", "eight stars|two water vessels|bird|open landscape", "restoring trust through honest vulnerability, steady healing, and a long view", "hope|healing|renewal|trust|inspiration|openness|guidance|future vision", "discouragement|lost faith|exposure fear|healing delay|comparison|disconnection|pessimism|dimmed purpose", "以诚实的脆弱、稳定修复与长期视野恢复信任", "希望|疗愈|更新|信任|灵感|开放|指引|未来愿景", "灰心|失去信念|害怕暴露|修复延迟|比较|失去连接|悲观|使命黯淡"),
+  defineSemanticCard("major-18-moon", "major", "18", 18, "the guide through uncertainty", "moon path|dog and wolf|crayfish|two towers", "moving through uncertainty by separating intuition, fear, memory, and fact", "uncertainty|subconscious|dream|intuition|ambiguity|emotion|imagination|hidden pattern", "confusion|projection|anxiety|deception|distorted memory|fear loop|misread signal|truth emerging", "在不确定中分辨直觉、恐惧、记忆与事实", "不确定|潜意识|梦境|直觉|模糊|情绪|想象|隐藏模式", "混乱|投射|焦虑|欺瞒|记忆扭曲|恐惧循环|误读信号|真相浮现"),
+  defineSemanticCard("major-19-sun", "major", "19", 19, "the radiant child", "sunflowers|white horse|red banner|bright sun", "allowing clarity, vitality, and uncomplicated truth to be fully seen", "clarity|joy|vitality|success|warmth|honesty|confidence|visibility", "forced optimism|ego glare|delayed joy|burnout|overexposure|naivety|hidden sadness|temporary setback", "让清晰、活力与简单真相被充分看见", "清晰|喜悦|活力|成功|温暖|坦诚|信心|可见度", "强装乐观|自我膨胀|喜悦延迟|耗竭|过度曝光|天真|隐藏悲�n���$z{-���jם%��(	�[�.h�8K��[�Y8�x�Yʎy�Nj�[��8&�����j�^X�nX�.y�NX[>�J����X���;�YʎK��K���~X�Zh.K�^ZHNyn(	�G�&We���(	�8& ����&W6V�C���Yʎx�YʎK��{�����G���W�h��(	�G�W���(	�[�nX�y��X����Ίhk.K�j�NX��K��X{�Y��[�N8&�����[�x��h����[�>X��(	�G�W���(	�K��(	�G�&We���(	�K���{Ny�N[�X��8&��x�YʎX��yJ�y�N�XNk�i��(	�G�W�E��(	���΋�>X���;�y�Ni�i:nx+�X��i��(	�G�&We�E��(	�8&��G���W�X[>[�>y�Ni��K��ZJ��;�{�>K�K�K����Έ�K��i����΋y�zk��(NkX�{�>i��8& ����gWGW&S���Yʎiʮi�^K��{�����G���W�h����Y�N{�^(	�G�W���(	�j�>Yʎ[�.h�y�NX�Y	��ΈΙ��Y��Z�{�>[8&��Zh.i��X��iz�ZHNyn(	�G�&We���(	����K��K���nj�^X���;�iK�ZJ~(	�G�W���(	�8&��K��K��iʮi�^[�Y8���΋��[�x��i��zK�(	�G�W�e��(	�X���;�h�>[�z���{N��Έ�(	�G�&We�e��(	�X���;�iKnz�Nz���{N8&��G���Wޘ(��~K��	���~Z��(	�G�W�5��(	�K��X{�X[~K�>Y��[�Ni�^Z�
+�h�X��8& ����6��v�S���K��K��xJnx+�x�����G���W�K�^(	�G�W���(	�Y(�(	�G�6V��F�2�6�&W�(	ޘx�ikjnZ�i[NK���z�)�8&��X�^x�Ίxn�y.h��(	�G�W���(	�iK�YʎK��[�>���K����(	�G�&We���(	�yY�Yʎ�x�Z����{Ɏ8&��G���W�h�K�(	�G�W�E��(	�K��K���XNk����Y�i{n��~K�yY�hH�(	�G�&We�E��(	�8&�����[�x��i��.Y�K��K����X��K��X��h	�h�zK���Έ�K��i��Y��Z�X�NXk>8& �Т���F�����V��w3�����fS��YʎhI�h8^�z�)�K�����G���W�h�~X{�(	�G�W���(	�Zh.K�^[�Y8�h8^hI�K�.h:K���h��8&�K�.Z�nX[>{;����hX�n��(	�G�W���(	�K��(	�G�&We���(	�K���{Ny�NyX�{��8&���6&VW#��YʎK��K���z�)�K�����G���W�h��(	�G�W���(	ދ��X�nK���y.��.8��.ZX�K��J>K����X��y�N���)�8&�[z^K��hꎋ��X�nXk>K��;�Y
+n��yJ�(	�G�W�E��(	����Y�i{n��XXމ�XZ^(	�G�&We�E��(	�8&���7GVG���YʎZ�nK��z�)�K�����G���W�h��(	�G�W���(	ދ��h�^X�k:�hH�X��8{�>K�K��X�ޚh�Z�h�.8&�[�>(	�G�W�%��(	�X�nK�>(	�G�&We�%��(	�y�Nj�[��i{n���Z�nK�h��Kɮy��j�>iK�YhN8&������W���Yʎ�y�+�z�)�K�����G���Wފ�~K�j8i�^(	�G�W���(	�Zh.K�^iK�X���XNk���h��K��8�h��X�~8&��J.X�X�Nijޙ��h(	�G�W�E��(	����K�����hK��(	�G�&We�E��(	ފ��Z�K����8&���&V�F���6����YʎK����^�z�)�K�����G���W�i��zK�(	�G�W���(	�Zh.K�^Z�
+k)��	�8K�K��K���yX�8&���^�;�Yʎ(	�G�&We���(	�h�^z�[��.X�ފ�Nk�^(	�G�W���(	����K�.X��[iȞiK�X��z���{N8&���6V�c��Yʎ�z�h�h�.{J.K�����G���W�h��(	�G�W���(	ފxnK��j�>YʎX�[^y�NXh^Yʎ�;�X��8&�h��[�hH�Y>y�[�ny�Z[�ZX~��.Z��(	�G�&We���(	����Y�i{n{�>K�(	�G�W�E��(	�8&����F�W#��Yʎ[�>X�ޙz�)�K�����G���Wފ�(	�G�W���(	�h�K��i�k�^jY�y�N�x.Z���y.[�n8&�x�Z��Y��[�N���h[�>�(	�G�W���(	����[�nZ��(	�G�&We���(	�K��h��x�Z��8&ТТғ���b�G&F�F���&WGW&�&s��&WGW&��4���'6R�F�G&F�F����6���W6R��4���7G&��v�g��&r�����Р�6��7BvV�W&�4��6�U66ff��G2�������6�&S���Ʋ���G���8�K��[�>��.��8�8�G���8�8~8�8&��W�����"���G���8�8�G��8�8).�8~k�8�8~8nK��8N88�G�'�8�8).X[~K�>y�N8���X�^8�{Y8>8N88�8�8&��&Wc�����"���G���8�nK��{��8�8�G��8�8�8�G�'�8�8).�h�y�N8~8ik�k9^8(N89�8;�8+�8).K��j�>8�8(�8(�8nK�>8~8�8�8&��Gf�6S�����8�G��8�8).��8�8�k>Z��8~8�8(�[�8^8�K�jڞ8).��8)>8~8�88^8N8&��v&��s�����8�G��8�8).[�>xKn8�x�nhX�8�8~8nY��Z�8�8�8K��Z��8�Z(>yX�8).z+����8~8n8�88^8N8&��VW7F��㢆���zx8�8�G��8�8�88�8�8(�8n8�X[~K�>y�N8�[��z�N8~8�8(�8~8~8(~8n8���� ��������6�&S���Ʋ���G����ق�[^Ⱥ��;��	θ�B(	�G���(	���^�����B���W�����"���G��������B�(	�G��(	���B��ɹ��κ��+��XB(	�G�'�(	���B�Z��+N��ۂ�h�����;��{�+�Z������B���&Wc�����"���G����z޻
+��j^��(	�G��(	ޫ;�(	�G�'�(	���B�+N�Kκ��
+��)^��N�)��h޸�N�[���	^�Y���Ϋ:�y�Z������B���Gf�6S�����(	�G��(	���B�;N�z��;θ�B���:ٙ^�ۂ���^�Y��Y��������B�J�9��Y��K�ɩB���v&��s�����(	�G��(	���B��^ȉ��Y���N��B��N�����	^�8ٙN�Y��x�y�:�*�ȺN�;��+ޫ8N�[�ٙ^�ێ�Y��K�ɩB���VW7F��㢆����)���B(	�G��(	��y�kN�jB�Z��+N��ۂ�
+�ȹ���κ�����^�Zȉ�����N���ɩC� ����W3���6�&S���Ʋ����F&V6V�G&�FRG���W2*�G���+����W�����"���G���W6*�G��+�6���&V7W'6��6��V7F*�G�'�+�6��V�66�;6�6��7&WF���&Wc�����"���G�����fW'F�F�FR&Wf�6"*�G��+��*�G�'�+�&6�'&Vv�"V��:�F�F��V�&�F�����Gf�6S�����VƖvRV�6�WV\;���'6W'f&�RVRW�&W6R*�G��+����v&��s���������&�Ɩ6W2*�G��+�6����'VR&W7V�FRf֖Ɩ#�6��'VV&�V6��2��:�֗FW2���VW7F��㢆���+�<;6��VVF�&W7��FW"FR��W&6��7&WF*�G��+�� ����g#���6�&S���Ʋ����L:&6�R6V�G&�RFRG���W7B*�G���+����W�����"���G���WF�Ɨ6R*�G��+�6���R&W76�W&6RWB&VƖR*�G�'�+�:V�R7F���6��7,:�FR���&Wc�����"���G���&V�fW'<:�R��f�FR:&Wf��"*�G��+�WB*�G�'�+�f��N(	��W7FW"��:�F��FR�R�R'�F��R���Gf�6S�����6���6�76W�V�WF�B2�'6W'f&�RV�W�&��R*�G��+����v&��s������R��&�Ɨ6W�2*�G��+�6�W2,:�FW�FRVR6R66�:��W7Bf֖ƖW"�l:�&�f�W��W2f�G2WB�W2Ɩ֗FW2���VW7F��㢆���6���V�BV�2֦R,:���G&R6��7,:�FV�V�B:*�G��+�� ����FS���6�&S���Ʋ���F�R�V�G&�RVfv&Rf��G����7B(	�G���(	����W�����"���G����WG�B(	�G��(	��2&W76�W&6RV�BfW&&��FWB(	�G�'�(	�֗BV��V����&WFV�66�&�GB���&Wc�����"���G���V�vV�V�'Bf�&FW'BF�RVb�(	�G��(	�V�B(	�G�'�(	��R,;�fV�V�B�WF��FR�FW"FV���W76V����Gf�6S�����|:F��RV��V���V��V��&V�&6�F&&V�66�&�GB�FW"(	�G��(	�W6G,;�6�B���v&��s�������&�Ɨ6�W&R(	�G��(	��6�B�W"W2vWv���V�C�,;�fRf�FV�V�Bw&V�V����VW7F��㢆���v�R����6�Vb(	�G��(	����&WB&Vv�W&V�� ����C���6�&S���Ʋ���F&Vf6V�G&�FRG���:�(	�G���(	����W�����"���G���W6(	�G��(	�6���&V7W'6�RƖv(	�G�'�(	�V�:|:6�6��7&WF���&Wc�����"���G�����fW'F�FVFRVR(	�G��(	�R(	�G�'�(	�6V��&Wf�7F�2&�W7F"��:�F�F��R�&�F�����Gf�6S�����W66�ƆV�76�WVV��R�'6W'l:fV�VRW�&W76R(	�G��(	����v&��s������:6���&�Ɨ�R(	�G��(	�<;2�'VR&V6Rf֖Ɩ#�6��f�&�RfF�2RƖ֗FW2���VW7F��㢆���6����76�&W7��FW"FR��F�6��7&WF�(	�G��(	�� ����'S���6�&S���Ʋ���	=�-��}M}�-�*�G���+�(	B*�G���+����W�����"���	�-*�G���+������}=]"*�G��+���]=�-�}�-]"*�G�'�+�����]-���M]�--�]����&Wc�����"���	�]]-�=-��-*�G���+��]M�=]"��-]�-�*�G��+��*�G�'�+����]�-��-"������-]�����Gf�6S�����	-�]�-R�]����������M]����2���-���-�m]"*�G��+����v&��s�����	�R}�-�-R*�G��+������-������r�}��-�}��-����-]�-RM�-��=��m����VW7F��㢆���	�����=2����]-���--]-�-��*�G��+�� ����#���6�&S���Ʋ����}�M�]�}�]���}�M�=�=�}�=�����M���}�}�-��G����}��*�G���+����W�����"������=������R���}�}�-��G���*�G��+��=�]�������������r*�G�'�+�����}�������]�M�������&Wc�����"��������������}�}�-��G����}�M�]���=���=���]�M���]��}�͋���*�G��+���*�G�'�+������������B�}�M�=�=�M�����=���}�M������������Gf�6S������}�튭���}�����]��������-�}���M���M�M�]�M�}�݋��������������b*�G��+����v&��s������M�r���������*�G��+��=�]����r�}�����������r�M�]�͋���=�m�r�]�=�M�������}�͋��}�M�ݘ-�}�m�"���}�M�݊��������VW7F��㢆����=������]�=�m�m���}�M�}�=���͊}�������]��������]�M�����M�*�G��+��� ���������6�&S���Ʋ���G���
+I^
+K�
+J�
+X
+In
+X�
+J�
+K^
+K�
+K~
+J�(	�G���(	�
+K�
+X�
+ZF��W�����"���G���(	�G��(	�
+I^
+X�
+K�
+K�
+J~
+J�
+J�
+J�
+K�
+I^
+K(	�G�'�(	�
+I^
+X�
+H�
+IR
+J
+X�
+K�
+I^
+Jn
+J�
+K�
+Xr
+I�
+X�
+J
+K�
+JN
+K�
+K�
+X�
+ZF��&Wc�����"���G���
+I^
+X
+H�
+K.
+I�
+X
+K�
+X�
+J^
+K�
+JN
+K�(	�G��(	�
+IN
+K(	�G�'�(	�
+I^
+X
+I�
+K�
+H
+I�
+I^
+K
+I^
+Xr
+JN
+K
+X
+I^
+K�
+J�
+K�
+I~
+JN
+K�
+K�
+X
+J~
+K�
+K
+J�
+Xr
+I^
+X�
+I^
+K�
+JN
+X
+K�
+X�
+ZF��Gf�6S�����(	�G��(	�
+I^
+X�
+Jn
+K�
+In
+K�
+J�
+Xr
+K^
+K�
+K.
+K�
+I�
+X�
+I�
+K�
+IN
+K
+K�
+X�
+J�
+K~
+X�
+I�
+I^
+Jn
+J�
+I�
+X
+J�
+X~
+H.
+ZF��v&��s�����(	�G��(	�
+I^
+X�
+I^
+X~
+K^
+K"
+J�
+K
+K�
+I�
+K�
+JB
+K�
+X�
+J�
+Xr
+I^
+Xr
+I^
+K�
+K
+J2
+K�
+K�
+J�
+K�
+J�
+X�
+J�
+J�
+J�
+K�
+J�
+X~
+H#�
+JN
+J^
+X�
+J�
+IN
+K
+K�
+X
+J�
+K�
+H�
+H
+I�
+K�
+H
+I�
+X~
+H.
+ZF��VW7F��㢆���
+J�
+X�
+H"(	�G��(	�
+I^
+K�
+J
+X�
+K�
+H�
+JN
+X�
+JN
+K
+I^
+X�
+K�
+Xr
+Jn
+Xr
+K�
+I^
+JN
+K�
+K�
+X.
+H� �ЧӰ��gV�7F���'V��DvV�W&�4��6�T6��FV�B�&�f��R���wVvR���R���6��7B66ff��B�vV�W&�4��6�U66ff��G5���wVvUӰ�6��7B6V��F�2�&�f��R�6V��F�2�V㰢6��7BW�6V��F�2�W&�v�C��6��7B&Wb�6V��F�2�&WfW'6VC��6��7B&�FFR��Ɨ7B���FW����Ɨ7E���FW�RƗ7B��V�wF�Ӱ�&WGW&�FD�Vv7�f�V�G2�����R��6��'D��S���R��W&�v�D�W�v�&G3�����W���&WfW'6VD�W�v�&G3�����&We���6�&UF�V�S�66ff��B�6�&R���R�6V��F�2�6�&R���W&�v�D�V��w3�'&��g&�҇��V�wF��b�������FW����66ff��B�W���R�&�FFR�W���FW���&�FFR�W���FW��2�����&WfW'6VD�V��w3�'&��g&�҇��V�wF��b�������FW����66ff��B�&Wb���R�&�FFR�&Wb���FW���&�FFR�&Wb���FW��2�����6�F�t�V��w3�'&��g&�҇��V�wF��B�������FW����66ff��B�&Wb���R�&�FFR�&Wb���FW���&�FFR�W���FW������7G&V�wF�3�'&��g&�҇��V�wF��B�������FW����66ff��B�W���R�&�FFR�W���FW���&�FFR�W���FW��B�����6���V�vW3�'&��g&�҇��V�wF��B�������FW����66ff��B�&Wb���R�&�FFR�&Wb���FW���&�FFR�&Wb���FW��B�����Gf�6Uf&��G3���W&�v�C�'&��g&�҇��V�wF��b�������FW����66ff��B�Gf�6R�&�FFR�W���FW������&WfW'6VC�'&��g&�҇��V�wF��b�������FW����66ff��B�Gf�6R�&�FFR�&Wb���FW��������v&��uf&��G3���W&�v�C�'&��g&�҇��V�wF��R�������FW����66ff��B�v&��r�&�FFR�W���FW������&WfW'6VC�'&��g&�҇��V�wF��R�������FW����66ff��B�v&��r�&�FFR�&Wb���FW��������&Vf�V7F���f&��G3�'&��g&�҇��V�wF����������FW����66ff��B�VW7F��↖�FW�R"�&�FFR�&Wb���FW���&�FFR�W���FW�������6�F����V��w3���7C�'&��g&�҇��V�wF��B�������FW����66ff��B�W���R�&�FFR�W���FW���&�FFR�&Wb���FW������&W6V�C�'&��g&�҇��V�wF��B�������FW����66ff��B�W���R�&�FFR�W���FW��"��&�FFR�&Wb���FW��"�����gWGW&S�'&��g&�҇��V�wF��B�������FW����66ff��B�W���R�&�FFR�W���FW��B��&�FFR�&Wb���FW��B�����6��v�S�'&��g&�҇��V�wF��B�������FW����66ff��B�W���R�&�FFR�W���FW����&�FFR�&Wb���FW���������F�����V��w3��&�V7B�g&��V�G&�W2��&��fR"�&6&VW""�'7GVG�"�&���W�"�'&V�F���6��"�'6V�b"�&�F�W"%�����F�����F�����FW������F�������66ff��B�W���R�&�FFR�W�F�����FW���&�FFR�W�F�����FW��2���66ff��B�&Wb���R�&�FFR�&Wb�F�����FW���&�FFR�&Wb�F�����FW��2��ТҒ��ғ��Р�gV�7F���'V��D��6Ɨ�VD6��FV�B�&�f��R���wVvR���6��7B��R�vWD��6Ɨ�VD6&D��R�&�f��R���wVvR����b���wVvR���&V�"�&WGW&�'V��DV�vƗ6�6��FV�B�&�f��R���R����b���wVvR���'���4�"�&WGW&�'V��D6���W6T6��FV�B�&�f��R���R�f�6R����b���wVvR���'���Er"�&WGW&�'V��D6���W6T6��FV�B�&�f��R���R�G'VR���&WGW&�'V��DvV�W&�4��6�T6��FV�B�&�f��R���wVvR���R���Р�6��7BF&�DFV6��F&�E6V��F�5&�f��W2����&�f��R�����6��7B��6Ɨ�VB��&�V7B�g&��V�G&�W2�F&�D��wVvT6�FW2������wVvR������wVvR�'V��D��6Ɨ�VD6��FV�B�&�f��R���wVvR�Ғ���&WGW&������&�f��R����T6���6Ɨ�VE�'���4�%����R����TV���6Ɨ�VB�V����R���W�v�&G3���6Ɨ�VE�'���4�%��W&�v�D�W�v�&G2��W&�v�D�V��s���6Ɨ�VE�'���4�%��W&�v�D�V��w5����&WfW'6VD�V��s���6Ɨ�VE�'���4�%��&WfW'6VD�V��w5����Gf�6S���6Ɨ�VE�'���4�%��Gf�6Uf&��G2�W&�v�E����v&��s���6Ɨ�VE�'���4�%��v&��uf&��G2�W&�v�E������6Ɨ�V@�Ӱ�ғ���gV�7F���vWD��6Ɨ�VD6&B�6&B���wVvR�&V�"���6��7B6V�V7FVD��wVvR�F&�D��wVvT6�FW2��6�VFW2���wVvR����wVvR�&V�#��6��7B��6Ɨ�VB�6&C����6Ɨ�VC��6V�V7FVD��wVvU���6&C����6Ɨ�VC��V㰢�b���6Ɨ�VB���6��6��R�v&�֗76��rF&�B��6Ɨ�F���G�6&C��B��'V���v�'��G�6V�V7FVD��wVvW����&WGW&�F&�DFV6������6Ɨ�VB�V㰢Т&WGW&���6Ɨ�VC��Р�gV�7F���vWD�&�V�FF���W�v�&G2�6&B��&�V�FF����'W&�v�B"���wVvR�&V�"���6��7B��6Ɨ�VB�vWD��6Ɨ�VD6&B�6&B���wVvR���&WGW&��&�V�FF������'&WfW'6VB"���6Ɨ�VB�&WfW'6VD�W�v�&G2���6Ɨ�VB�W&�v�D�W�v�&G3��Р�gV�7F���fƖFFUF&�E6V��F�46�'W2����6��7B�77VW2��Ӱ��b�F&�DFV6���V�wF���s���77VW2�W6��W�V7FVBs�6&G2�&V6V�fVBG�F&�DFV6���V�wF�����6��7B&WV�&VD'&�2���W&�v�D�W�v�&G3����&WfW'6VD�W�v�&G3����W&�v�D�V��w3�b��&WfW'6VD�V��w3�b��6�F�t�V��w3�B��7G&V�wF�3�B��6���V�vW3�B��&Vf�V7F���f&��G3���Ӱ�F&�DFV6��f�$V6���6&B������&�B"�&&6�"�'7V�B"�'&�"�&V�V�V�B"�&�V�&W""�&&6�WG�R"�'7��&��2"�'F�V�W2"�&��6Ɨ�VB%��f�$V6���f�V�B������b�6&E�f�V�E����V�FVf��VB��6&E�f�V�E�����V��77VW2�W6��G�6&B�G��G�f�V�G�֗76��v���ғ��F&�D��wVvT6�FW2�f�$V6�����wVvR�����6��7B6��FV�B�6&B���6Ɨ�VE���wVvUӰ��&�V7B�V�G&�W2�&WV�&VD'&�2��f�$V6����f�V�B�֖��V�Ғ�����b�'&��4'&��6��FV�C��f�V�EҒ��6��FV�E�f�V�E���V�wF��֖��VҒ�77VW2�W6��G�6&B�G��G���wVvW��G�f�V�G��G�֖��V�����ғ���'W&�v�B"�'&WfW'6VB%��f�$V6����&�V�FF��������b�'&��4'&��6��FV�C��Gf�6Uf&��G3���&�V�FF���Ғ��6��FV�B�Gf�6Uf&��G5��&�V�FF������V�wF��b��77VW2�W6��G�6&B�G��G���wVvW��Gf�6Uf&��G2�G��&�V�FF�����f����b�'&��4'&��6��FV�C��v&��uf&��G3���&�V�FF���Ғ��6��FV�B�v&��uf&��G5��&�V�FF������V�wF��R��77VW2�W6��G�6&B�G��G���wVvW��v&��uf&��G2�G��&�V�FF�����V���ғ���'7B"�'&W6V�B"�&gWGW&R"�'6��v�R%��f�$V6����6�F��������b�'&��4'&��6��FV�C���6�F����V��w3���6�F���Ғ��6��FV�B��6�F����V��w5��6�F������V�wF��B��77VW2�W6��G�6&B�G��G���wVvW���6�F����V��w2�G��6�F�����F���ғ���&��fR"�&6&VW""�'7GVG�"�&���W�"�'&V�F���6��"�'6V�b"�&�F�W"%��f�$V6���F���������b�'&��4'&��6��FV�C��F�����V��w3��F����Ғ��6��FV�B�F�����V��w5�F�������V�wF��"��77VW2�W6��G�6&B�G��G���wVvW��F�����V��w2�G�F������&���ғ��ғ��ғ���b��77VW2��V�wF��6��6��R�v&�%F&�B6V��F�26�'W2fƖFF���f��VB"��77VW2���&WGW&��fƖC��77VW2��V�wF������77VW2Ӱ��

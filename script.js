@@ -258,7 +258,7 @@ function renderCards(drawnCards) {
       <span class="orientation-badge ${item.orientation === "reversed" ? "reversed" : ""}">${getOrientationText(item.orientation)}</span>
       <h3 class="card-name">${getDisplayCardName(item.card)}</h3>
       <p class="card-meta">${getArcanaText(item.card)} · ${getSuitText(item.card)} · ${getElementText(item.card)}</p>
-      <p class="keyword-list"><strong>${t("tarot.keywords")}：</strong>${getLocalizedCard(item.card, currentLanguage).keywords.join(" / ")}</p>
+      <p class="keyword-list"><strong>${t("tarot.keywords")}：</strong>${getOrientationKeywords(item.card, item.orientation, currentLanguage).join(" / ")}</p>
     `;
     cardsContainer.appendChild(cardElement);
   });
@@ -454,15 +454,20 @@ function validateI18nCoverage() {
     "safety.blockedTitle", "safety.blockedMessage", "safety.rewriteSuggestions", "safety.medical", "safety.legal", "safety.finance", "safety.gambling", "safety.harm", "safety.death", "safety.certainty", "safety.professionalAdvice",
     "fallback.unknown", "fallback.noMeaning", "fallback.noAdvice", "fallback.noWarning", "fallback.noQuestion", "fallback.loading", "fallback.error"
   ];
-  const bankKeys = ["questionTypeBank", "suitBank", "orientationBank", "positionBank", "combinationBank", "actionBank", "warningBank", "reflectionBank", "fallbackBank"];
+  const bankKeys = ["questionTypes", "intents", "relationOpeners", "elementRelations", "orientationFlows", "numberPatterns", "summaryBridges", "fallbacks"];
+  const requiredCardFields = [
+    "name", "shortName", "uprightKeywords", "reversedKeywords", "coreTheme",
+    "uprightMeanings", "reversedMeanings", "shadowMeanings", "strengths", "challenges",
+    "adviceVariants", "warningVariants", "reflectionVariants", "positionMeanings", "domainMeanings"
+  ];
   supportedLanguages.forEach(({ code }) => {
     requiredI18nPaths.forEach((path) => {
       if (!getI18nValue(code, path)) console.warn(`Missing i18n key: ${code}.${path}`);
     });
     tarotDeck.forEach((card) => {
       const localized = card.localized?.[code];
-      ["name", "keywords", "uprightMeaning", "reversedMeaning", "advice", "warning"].forEach((field) => {
-        if (!localized || !localized[field] || (field === "keywords" && localized[field].length === 0)) console.warn(`Missing tarot localization: ${card.id}.${code}.${field}`);
+      requiredCardFields.forEach((field) => {
+        if (!localized || !localized[field] || (Array.isArray(localized[field]) && localized[field].length === 0)) console.warn(`Missing tarot localization: ${card.id}.${code}.${field}`);
       });
     });
     const bank = getInterpretationBank(code);
@@ -470,4 +475,6 @@ function validateI18nCoverage() {
       if (!bank[key]) console.warn(`Missing interpretation bank: ${code}.${key}`);
     });
   });
+  const corpusValidation = validateTarotSemanticCorpus();
+  if (!corpusValidation.valid) console.warn("Tarot semantic corpus is incomplete", corpusValidation.issues);
 }
